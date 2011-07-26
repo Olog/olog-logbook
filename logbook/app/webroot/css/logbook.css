@@ -122,13 +122,13 @@ ul, li {
 }
 
 #logFormContainer {
-    height: 200px;
-    width: 600px;
+    height: 280px;
+    width: 750px;
 }
 
 #logFormInfo {
     position: absolute;
-    height: 175px;
+    height: 250px;
 }
 
 #logFormDescription {
@@ -166,7 +166,7 @@ ul, li {
 
 #logFormSubmit {
     float: right;
-    height: 30px;
+    height: 45px;
 }
 
 #addNewFile {
@@ -426,7 +426,7 @@ form {
 
     margin-right: 20px;
     padding: 0;
-    width: 50%;
+    width: 95%;
 }
 fieldset {
     border: 1px solid #ccc;

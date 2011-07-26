@@ -31,7 +31,7 @@
                 <?php } ?>
             </div>
             <div id='logFormContainer'>
-                
+
                 <div id='logFormInfo'>
                     
                     <?php echo $this->Form->input('subject', array('type' => 'hidden')); ?>
@@ -43,8 +43,11 @@
                     <div id='logFormLevels'><?php echo $this->Form->input('level'); ?></div>
                     <div id='logFormLogbooks'><?php echo $this->Form->input('logbooks', array('type' => 'select', 'multiple' => true)); ?></div>
                     <div id='logFormTags'><?php echo $this->Form->input('tags', array('type' => 'select', 'multiple' => true)); ?></div>
+                    <div id='logFormSubmit'>
+                        <?php echo $this->Form->end(__('Submit', true)); ?>
+                    </div>
                 </div>
-            </div>
+                </div>
 	    <div style="display:none" class="addFiles" id="fileupload_<?php //echo $log['id']; ?>">
 		<form action="<?php echo $base; ?>/olog/uploads/index/id:<?php //echo $log['id']; ?>" method="POST" enctype="multipart/form-data">
 		    <label class="fileinput-button">
@@ -79,9 +82,6 @@
 		    </script>
 		</div>
 	    </div>
-            <div id='logFormSubmit'>
-                <?php echo $this->Form->end(__('Submit', true)); ?>
-            </div>
         </fieldset>
     </div>
 
