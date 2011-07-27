@@ -47,7 +47,7 @@
                         <?php echo $this->Form->end(__('Submit', true)); ?>
                     </div>
                 </div>
-                </div>
+            </div>
 	    <div style="display:none" class="addFiles" id="fileupload_<?php //echo $log['id']; ?>">
 		<form action="<?php echo $base; ?>/olog/uploads/index/id:<?php //echo $log['id']; ?>" method="POST" enctype="multipart/form-data">
 		    <label class="fileinput-button">
@@ -293,13 +293,13 @@
         var newTimeSpan = $('#timespan').val();
         window.location.replace('<?php echo $base.'/'.$this->params['plugin'].'/'.$this->params['controller']; ?>+ /timespanChange/' + newTimeSpan + '<?php echo $argumentString; ?>');
     });
-
+    
     $('#search').bind('keypress', function(e) {
         var code = (e.keyCode ? e.keyCode : e.which);
         if(code == 13) {
             var search = $('#search').val();
             if(search!=''){
-                search='search:'+search;
+                search='search:'+'*'+search+'*';
             }
             <?php
             $args = '';
