@@ -20,7 +20,7 @@
     <div id="logForm" class="logs form" style="display: none" >
        
         
-        <?php echo $this->Form->create('log', array('type' => 'file', 'action' => 'add')); ?>
+        <?php echo $this->Form->create('log', array('id' => 'mainFormId', 'type' => 'file', 'action' => 'add')); ?>
         <fieldset id='logFormFieldset'>
             <legend><?php __('Add a New Log'); ?></legend>
             <div id='logFormCredentials'>
@@ -41,10 +41,11 @@
                 </div>
                 <div id='logFormSelects'>
                     <div id='logFormLevels'><?php echo $this->Form->input('level'); ?></div>
-                    <div id='logFormLogbooks'><?php echo $this->Form->input('logbooks', array('type' => 'select', 'multiple' => true)); ?></div>
+                    <div id='logFormLogbooks'><?php echo $this->Form->input('logbooks', array('type' => 'select', 'multiple' => true, 'id'=>'logbook_select')); ?></div>
                     <div id='logFormTags'><?php echo $this->Form->input('tags', array('type' => 'select', 'multiple' => true)); ?></div>
                     <div id='logFormSubmit'>
-                        <?php echo $this->Form->end(__('Submit', true)); ?>
+                        <?php echo $form->submit('submit', array('disabled' => true));
+                              echo $form->end(); ?>
                     </div>
                 </div>
             </div>
@@ -86,6 +87,12 @@
     </div>
 
     <script type="text/javascript" >
+        $('#logbook_select').click(function(){
+            $('input[type=submit]').attr('disabled', false);
+       });
+        $('#mainFormId').submit(function(){
+            $('input[type=submit]', this).attr('enabled', 'disabled');
+        });
     $('#addNewLog').click(function() {
 	$('#logForm').show('fast');
 	$('#addNewLog').hide();
