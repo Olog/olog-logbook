@@ -153,36 +153,38 @@ class LogsController extends OlogAppController {
     function timespanChange($newTimeSpan = null) {
         $startDate = null;
         $endDate = date('U');
-
-        switch ($newTimeSpan) {
-            case 0: // Last day
-                $startDate = mktime(0, 0, 0, date('m'), date('d') - 1, date('y'));
-                break;
-            case 1: // Last 3 Days
-                $startDate = mktime(0, 0, 0, date('m'), date('d') - 3, date('y'));
-                break;
-            case 2: // Last week
-                $startDate = mktime(0, 0, 0, date('m'), date('d') - 7, date('y'));
-                break;
-            case 3: // Last month
-                $startDate = mktime(0, 0, 0, date('m') - 1, date('d'), date('y'));
-                break;
-            case 4: // Last 3 Months
-                $startDate = mktime(0, 0, 0, date('m') - 3, date('d'), date('y'));
-                break;
-            case 5: // Last 6 Months
-                $startDate = mktime(0, 0, 0, date('m') - 6, date('d'), date('y'));
-                break;
-            case 6: // Last year
-                $startDate = mktime(0, 0, 0, date('m'), date('d'), date('y') - 1);
-                break;
-        }
-
+        
         $argumentString = '';
         foreach ($this->passedArgs as $argumentName => $argumentValue) {
             if ($argumentName != '0' && $argumentName != 'start' && $argumentName != 'end') {
                 $argumentString .= '/' . $argumentName . ':' . $argumentValue;
             }
+        }
+        
+        switch ($newTimeSpan) {
+            case 0:
+                $this->redirect('/olog/logs/index/'.$argumentString);
+            case 1: // Last day
+                $startDate = mktime(0, 0, 0, date('m'), date('d') - 1, date('y'));
+                break;
+            case 2: // Last 3 Days
+                $startDate = mktime(0, 0, 0, date('m'), date('d') - 3, date('y'));
+                break;
+            case 3: // Last week
+                $startDate = mktime(0, 0, 0, date('m'), date('d') - 7, date('y'));
+                break;
+            case 4: // Last month
+                $startDate = mktime(0, 0, 0, date('m') - 1, date('d'), date('y'));
+                break;
+            case 5: // Last 3 Months
+                $startDate = mktime(0, 0, 0, date('m') - 3, date('d'), date('y'));
+                break;
+            case 6: // Last 6 Months
+                $startDate = mktime(0, 0, 0, date('m') - 6, date('d'), date('y'));
+                break;
+            case 7: // Last year
+                $startDate = mktime(0, 0, 0, date('m'), date('d'), date('y') - 1);
+                break;
         }
 
         $this->redirect('/olog/logs/index/start:' . $startDate . '/end:' . $endDate . $argumentString);
