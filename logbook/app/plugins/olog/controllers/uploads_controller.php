@@ -6,7 +6,7 @@ class UploadsController extends OlogAppController {
 
 	function beforeFilter() {
 		parent::beforeFilter();
-		$this->LogAuth->allowedActions = array('index');
+		$this->LogAuth->allowedActions = array('index','proxy');
 	}
 	
 	function index() {
