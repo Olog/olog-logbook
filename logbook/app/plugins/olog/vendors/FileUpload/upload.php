@@ -21,6 +21,7 @@ class UploadHandler
             'user' => null,
             'pass' => null,
             'id' => null,
+            'repository' => null,
             'script_url' => $_SERVER['PHP_SELF'],
             'upload_dir' => '',
             'upload_url' => '',
@@ -82,11 +83,11 @@ class UploadHandler
         if ($davclient->is_file($file_name) && $file_name[0] !== '.') {
             $file = new stdClass();
             $file->name = basename($file_name);
-            $file->url = $this->options['upload_url'].$id.'/'.rawurlencode($file->name);
+            $file->url = $this->options['upload_url'].rawurlencode($id.'/'.$file->name);
             foreach($this->options['image_versions'] as $version => $options) {
                 if ($davclient->is_file($options['upload_dir'].$id.'/'.$file->name)) {
-                    $file->{$version.'_url'} = $options['upload_url'].$id.'/'
-                        .rawurlencode($file->name);
+                    $file->{$version.'_url'} = $options['upload_url'].rawurlencode($id.'/'
+                        .$file->name);
                 }
             }
             $file->delete_url = $this->options['script_url']
@@ -119,7 +120,7 @@ class UploadHandler
     private function create_scaled_image($file_name, $options) {
         $davclient = $this->getDavInstance();
         $file_path = $this->options['upload_dir'].$this->options['id'].'/'.$file_name;
-        $file_url = $this->options['upload_url'].$this->options['id'].'/'.$file_name;
+        $file_url = $this->options['repository'].$this->options['id'].'/'.$file_name;
         $davclient->mkcol($options['upload_dir'].$this->options['id'].'/');
         $new_file_path = $options['upload_dir'].$this->options['id'].'/'.$file_name;
         list($img_width, $img_height) = @getimagesize($file_url);
@@ -285,14 +286,14 @@ class UploadHandler
         $file->name = basename($_FILES['file']['name']);
         $file->sizef = intval($_FILES['file']['size']);
         $file->type = $_FILES['file']['type'];
-        $file->url = $this->options['upload_url'].$id.'/'.rawurlencode($file->name);
+        $file->url = $this->options['upload_url'].rawurlencode($id.'/'.$file->name);
         $file->delete_url = $this->options['script_url']
                 .'/file:'.rawurlencode($file->name).'/id:'.$id;
         $file->delete_type = 'DELETE';
         foreach($this->options['image_versions'] as $version => $options) {
                     if ($this->create_scaled_image($file->name, $options)) {
-                        $file->{$version.'_url'} = $options['upload_url'].$id.'/'
-                            .rawurlencode($file->name);
+                        $file->{$version.'_url'} = $options['upload_url'].rawurlencode($id.'/'
+                            .$file->name);
                     }
         }
         return json_encode(array($file));

@@ -26,14 +26,16 @@ class UploadsController extends OlogAppController {
 		$dbinfo = get_class_vars('DATABASE_CONFIG');
 		$repository = $dbinfo['olog']['repository'];
 		$repoArray = parse_url($repository);
+		$base_url = $this->base.'/olog/uploads/';
 		
 		$options = array(
 			'user' => $user,
 			'pass' => $pass,
 			'id' => $id,
-			'script_url' => $this->base.'/olog/uploads/index',
+			'repository' => $repository,
+			'script_url' => $base_url.'index',
 			'upload_dir' => $repoArray['path'],
-			'upload_url' => $repository,
+			'upload_url' => $base_url.'proxy?proxy_url='.rawurlencode($repository),
 			'param_name' => 'files',
 			// The php.ini settings upload_max_filesize and post_max_size
 			// take precedence over the following max_file_size setting:
@@ -45,7 +47,7 @@ class UploadsController extends OlogAppController {
 			'image_versions' => array(
 			    'thumbnail' => array(
 			        'upload_dir' => $repoArray['path'].'thumbnails/',
-			        'upload_url' => $repository.'thumbnails/',
+			        'upload_url' => $base_url.'proxy?proxy_url='.rawurlencode($repository.'thumbnails/'),
 			        'max_width' => 80,
 			        'max_height' => 80
 			    )
@@ -68,6 +70,40 @@ class UploadsController extends OlogAppController {
 		        $result = header('HTTP/1.0 405 Method Not Allowed');
 		}
 		return $result;
+	}
+	
+	function proxy() {
+		App::import('Vendor','olog.proxy',array('file'=>'proxy'.DS.'class_http.php'));
+
+		$proxy_url = isset($this->params['url']['proxy_url'])?rawurldecode($this->params['url']['proxy_url']):false;
+		if (!$proxy_url) {
+		    header("HTTP/1.0 400 Bad Request");
+		    echo "proxy.php failed because proxy_url parameter is missing";
+		    exit();
+		}
+
+		// Instantiate the http object used to make the web requests.
+		if (!$h = new http()) {
+		    header("HTTP/1.0 501 Script Error");
+		    echo "proxy.php failed trying to initialize the http object";
+		    exit();
+		}
+
+		$h->url = $proxy_url;
+		$h->postvars = $_POST;
+
+		if (!$h->fetch($h->url)) {
+		    header("HTTP/1.0 501 Script Error");
+		    echo "proxy.php had an error attempting to query the url";
+		    exit();
+		}
+
+		// Forward the headers to the client.
+		$ary_headers = split("\n", $h->header);
+		foreach($ary_headers as $hdr) { header($hdr); }
+
+		// Send the response body to the client.
+		echo $h->body;
 	}
 
 }
