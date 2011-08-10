@@ -442,6 +442,7 @@ fieldset legend {
     font-weight: bold;
 }
 fieldset fieldset {
+    width: 800px;
     margin-top: 0px;
     margin-bottom: 20px;
     padding: 16px 10px;
@@ -761,10 +762,4 @@ span.uploadspan {
     padding-left:10px;
     padding-top:10px;
 }
-#logFormContainer {
-  height: 320px \9;
-   
-}
-#logAddForm {
-  height: -0px \9;
-}
+

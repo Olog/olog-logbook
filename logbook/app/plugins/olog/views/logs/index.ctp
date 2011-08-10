@@ -10,8 +10,8 @@
 //);
 ?>
  <div id='logsFormAdd' align='right' >
-    <a><img id="closeNewLog" style="display:none" src="<?php echo $base; ?>/img/blue-document--minus.png" alt="close new log" class="NewLog_icons"></a>
-    <a><img id="addNewLog" src="<?php echo $base; ?>/img/blue-document--plus.png" alt="add new log" class="NewLog_icons"></a>
+    <a><img id="closeNewLog" style="display:none" src="<?php echo $base; ?>/img/blue-document--minus.png" alt="close new log" class="NewLog_icons" /></a>
+    <a><img id="addNewLog" src="<?php echo $base; ?>/img/blue-document--plus.png" alt="add new log" class="NewLog_icons" /></a>
  </div>
     
 <?php echo $this->Html->script('addUpload.js'); ?>
@@ -44,17 +44,18 @@
                     <div id='logFormLogbooks'><?php echo $this->Form->input('logbooks', array('type' => 'select', 'multiple' => true, 'id'=>'logbook_select')); ?></div>
                     <div id='logFormTags'><?php echo $this->Form->input('tags', array('type' => 'select', 'multiple' => true)); ?></div>
                     <div id='logFormSubmit'>
-                        <?php echo $form->submit('submit', array('disabled' => true));
-                              echo $form->end(); ?>
+                        <?php echo $form->submit('submit', array('disabled' => true)); ?>
+                                
                     </div>
                 </div>
             </div>
+                <?php  echo $form->end(); ?>
 	    <div style="display:none" class="addFiles" id="fileupload_<?php //echo $log['id']; ?>">
 		<form action="<?php echo $base; ?>/olog/uploads/index/id:<?php //echo $log['id']; ?>" method="POST" enctype="multipart/form-data">
 		    <label class="fileinput-button">
 			<span>Add files</span>
 			<input type="hidden" name="id" value="<?php //echo $log['id']; ?>" />
-			<input type="file" name="file" multiple>
+			<input type="file" name="file" />
 		    </label>
 		</form>
 		<div class="fileupload-content">
@@ -75,7 +76,7 @@
 				{{/if}}
 				</td>
 			    {{else}}
-				<td class="progress"><div></div></td>
+                                    <td class="progress"></td>
 				<td class="start"><button>Start</button></td>
 			    {{/if}}
 			    <td class="cancel"><button>Cancel</button></td>
@@ -191,7 +192,7 @@
                             <td class="subject">
 				<span><?php echo date('d M Y H:i', strtotime($log['createdDate'])).', '.$log['owner']; ?></span>
 				<span class="tag">
-				<?php if(!empty($log['tags'])) echo '<img src="'.$base.'/img/tag-medium.png">&nbsp;';
+				<?php if(!empty($log['tags'])) echo '<img src="'.$base.'/img/tag-medium.png" />&nbsp;';
 				    foreach ($log['tags'] as $tags) {
 					if (isset($tags['name'])) {
 					    echo $tags['name'];
@@ -204,7 +205,7 @@
 					}
 				    }?></span>
 				<span class="logbook">
-				    <img src="<?php echo $base; ?>/img/17px-Nuvola_apps_bookcase_1_blue.png">&nbsp;<?php
+				    <img src="<?php echo $base; ?>/img/17px-Nuvola_apps_bookcase_1_blue.png" />&nbsp;<?php
 				    foreach ($log['logbooks'] as $logbooks) {
 					if (isset($logbooks['name'])) {
 					    echo $logbooks['name'];
@@ -221,7 +222,7 @@
                                 <div class='description'><?php echo (!empty($log['description']) ? htmlentities($log['description']) : ''); ?></div>
 
 <div id="fileupload_<?php echo $log['id']?>" >
-<div class="files" title="<?php echo $base; ?>/olog/uploads/index/id:<?php echo $log['id'];?>"/>
+<div class="files" title="<?php echo $base; ?>/olog/uploads/index/id:<?php echo $log['id'];?>"></div>
 <script id="template-download" type="text/x-jquery-tmpl">
     <tr class="template-download{{if error}} ui-state-error{{/if}}">
         {{if error}}
@@ -248,7 +249,7 @@
         {{else}}
 	    {{if thumbnail_url}}
 	        <td class="preview">
-                    <a href="${url}" target="_blank"><img src="${thumbnail_url}"></a>
+                    <a href="${url}" target="_blank"><img src="${thumbnail_url}" /></a>
 		</td>
 	    {{else}}
 		<td class="name">
@@ -263,12 +264,12 @@
 </div>
 
 <div class="actionButton">
-    <form style='padding: 0px' action="<?php echo $base; ?>/olog/uploads/index/id:<?php echo $log['id']; ?>" method="POST" enctype="multipart/form-data">
+    <form style='padding: 0px' action="<?php echo $base; ?>/olog/uploads/index/id:<?php echo $log['id']; ?>" method="post" enctype="multipart/form-data">
 
-	<input type="file" name="file" multiple>
+	<input type="file" name="file" />
 	<input type="hidden" name="id" value="<?php echo $log['id']; ?>" />
 	<a style="padding: 0px 0px 0px 20px;" href="<?php echo $base.'/'.$this->params['plugin'].'/'.$this->params['controller'].'/edit/'.$log['id'];?>">
-	    <img border="0" src="<?php echo $base; ?>/img/blue-document--pencil.png" alt="edit">
+	    <img border="0" src="<?php echo $base; ?>/img/blue-document--pencil.png" alt="edit" />
 	</a>
     </form>
 </div>
