@@ -142,14 +142,17 @@ class UploadHandler
             case 'jpeg':
                 $src_img = @imagecreatefromjpeg($file_url);
                 $write_image = 'imagejpeg';
+                $quality = 100;
                 break;
             case 'gif':
                 $src_img = @imagecreatefromgif($file_url);
                 $write_image = 'imagegif';
+                $quality = 100;
                 break;
             case 'png':
                 $src_img = @imagecreatefrompng($file_url);
                 $write_image = 'imagepng';
+                $quality = 9;
                 break;
             default:
                 $src_img = $image_method = null;
@@ -164,7 +167,7 @@ class UploadHandler
             $img_height
         );
         ob_start();
-        $write_image($new_img, null, 100);
+        $write_image($new_img, null, $quality);
         $data = ob_get_clean();
 
         //todo: check file first
