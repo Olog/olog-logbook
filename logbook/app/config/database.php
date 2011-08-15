@@ -80,7 +80,7 @@ class DATABASE_CONFIG {
 	var $default = array(
 		'datasource' => 'Olog.Olog',
 		'scheme' => 'https',
-		'host' => 'irmis3.nscl.msu.edu',
+		'host' => 'localhost',
 		'port' => '8181',
 		'path' => 'Olog/resources',
                 'default_subject' => 'Logbook Application',
@@ -95,11 +95,11 @@ class DATABASE_CONFIG {
 	var $olog = array(
 		'datasource' => 'Olog.Olog',
 		'scheme' => 'https',
-		'host' => 'irmis3.nscl.msu.edu',
+		'host' => 'localhost',
 		'port' => '8181',
 		'path' => 'Olog/resources',
                 'default_subject' => 'Logbook Application',
-		'repository' => 'https://irmis3.nscl.msu.edu:8181/Olog/repository/olog/'
+		'repository' => 'https://localhost:8181/Olog/repository/olog/'
 	);
 
 }
