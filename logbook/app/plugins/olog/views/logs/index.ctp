@@ -32,9 +32,8 @@ echo $this->Html->script('addUpload.js');
                 <?php } ?>
             </div>
             <div id='logFormContainer'>
-
                 <div id='logFormInfo'>
-
+                    
                     <?php echo $this->Form->input('subject', array('type' => 'hidden')); ?>
                     <div id='logFormDescription' style="resize: none">
                         <?php echo $this->Form->input('description', array('type' => 'textarea', 'rows' => '15')); ?>
@@ -76,7 +75,7 @@ echo $this->Html->script('addUpload.js');
                                 {{/if}}
                             </td>
                             {{else}}
-                                    <td class="progress"></td>
+                                    <td class="progress"><div></div></td>
                             <td class="start"><button>Start</button></td>
                             {{/if}}
                             <td class="cancel"><button>Cancel</button></td>
@@ -227,7 +226,7 @@ echo $this->Html->script('addUpload.js');
                         <div class='description'><?php echo (!empty($log['description']) ? htmlentities($log['description']) : ''); ?></div>
 
                         <div id="fileupload_<?php echo $log['id'] ?>" >
-<div class="files" title="<?php echo $base; ?>/olog/uploads/index/id:<?php echo $log['id'];?>"></div>
+			   <div class="files" title="<?php echo $base; ?>/olog/uploads/index/id:<?php echo $log['id'];?>"/>
                             <script id="template-download" type="text/x-jquery-tmpl">
                                 <tr class="template-download{{if error}} ui-state-error{{/if}}">
                                     {{if error}}
@@ -254,7 +253,7 @@ echo $this->Html->script('addUpload.js');
                                     {{else}}
                                     {{if thumbnail_url}}
                                     <td class="preview">
-                    <a href="${url}" target="_blank"><img src="${thumbnail_url}" /></a>
+                    <a href="${url}" target="_blank"><img src="${thumbnail_url}"><div></div></a>
                                     </td>
                                     {{else}}
                                     <td class="name">
@@ -266,18 +265,21 @@ echo $this->Html->script('addUpload.js');
 
                                 </tr>
                                 </script>
-                            </div>
+                           </div>
 
-                            <div class="actionButton">
-    <form style='padding: 0px' action="<?php echo $base; ?>/olog/uploads/index/id:<?php echo $log['id']; ?>" method="post" enctype="multipart/form-data">
-
-	<input type="file" name="file" />
+   <div class="actionButton">
+      <form style='padding: 0px' action="<?php echo $base; ?>/olog/uploads/index/id:<?php echo $log['id']; ?>" method="POST" enctype="multipart/form-data">
+	<input type="file" name="file">
+	
                                     <input type="hidden" name="id" value="<?php echo $log['id']; ?>" />
                                     <a style="padding: 0px 0px 0px 20px;" href="<?php echo $base . '/' . $this->params['plugin'] . '/' . $this->params['controller'] . '/edit/' . $log['id']; ?>">
 	    <img border="0" src="<?php echo $base; ?>/img/blue-document--pencil.png" alt="edit" />
                                     </a>
-                                </form>
-                            </div>
+	 <span style="padding: 0px 0px 0px 0px;" id="componentAdd_<?php echo $log['id'];?>">
+	    <img border="0" src="<?php echo $base; ?>/img/task--plus.png" alt="component" />
+	</span>
+      </form>
+   </div>
                             <script type="text/javascript" >
                                 $('.edit_log').click(function() {
                                     $('#logForm').show('fast');
@@ -345,8 +347,19 @@ foreach ($this->params['named'] as $key => $param) {
         }
     }).watermark('Search...');
         </script>
-
-
+   <script>
+	$(function() {
+	       $( 'span[id^="componentAdd_"]' ).click(function() {
+		     var $div = $('<div title="Add Component"></div>');
+		     $div.load('http://localhost/applet.html', function(){
+		        $div.dialog({
+		           modal: true
+		        });
+		     });
+		     return false;
+	       });
+	});
+   </script>
         <?php
         echo $this->Html->script('FileUpload/jquery-ui-1.8.13.custom.min');
         echo $this->Html->script('FileUpload/jquery.iframe-transport');

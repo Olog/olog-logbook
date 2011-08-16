@@ -6,7 +6,7 @@ class LogsController extends OlogAppController {
 
     function beforeFilter() {
         parent::beforeFilter();
-        $this->LogAuth->allowedActions = array('index', 'add', 'view', 'timespanChange', 'logbookChange');
+        $this->LogAuth->allowedActions = array('index', 'add', 'view', 'timespanChange');
     }
 
     function index() {
@@ -42,25 +42,12 @@ class LogsController extends OlogAppController {
         $this->set(compact('argumentString'));
     }
 
-    /** Todo: implement a threaded view * */
-    function threaded() {
-        $this->Log->recursive = 0;
-        $this->Log->order = array('Log.created DESC');
-        $this->paginate = array('fields' =>
-            array('id', 'created',
-                'User.name', 'User.id',
-                'Level.name', 'Level.id',
-                'subject', 'detail', 'ParentLog.id'));
-        $this->set('logs', $this->paginate());
-    }
-
     function view($id = null) {
         if (!$id) {
             $this->Session->setFlash(__('Invalid log', true));
             $this->redirect(array('action' => 'index'));
         }
         $this->set('log', $this->Log->find('log', array('conditions' => array('id' => $id))));
-        //$this->set('log', $this->Log->read());
     }
 
     function add() {
@@ -71,10 +58,7 @@ class LogsController extends OlogAppController {
                 $this->Log->request['auth']['pass'] = $this->data['log']['password'];
             }
 
-            //if ($this->Session->check('Auth.User.id')) {
             $saved = $this->Log->save($this->data);
-            // save is called in uploader plugin component against $this->data
-            //if(!$this->uploadFiles($this->Log->id)) $saved=false;
             if ($saved) {
                 $this->Session->setFlash(__('The log has been saved', true));
                 $this->redirect(array('action' => 'index'));
@@ -87,9 +71,6 @@ class LogsController extends OlogAppController {
                 $this->Session->setFlash(__($print_error . 'The log could not be saved. Please, try again.', true));
                 $this->redirect(array('action' => 'index'));
             }
-            //} else {
-            //	$this->Session->setFlash(__('The log could not be saved. Please, try again.', true));
-            //}
         }
         $levels = array("Info" => "Info",
             "Problem" => "Problem",
@@ -110,31 +91,25 @@ class LogsController extends OlogAppController {
             $this->redirect(array('action' => 'index'));
         }
         if (!empty($this->data)) {
-//			if ($this->Session->check('Auth.User.id')) {
             if ($this->Log->save($this->data)) {
                 $this->Session->setFlash(__('The log has been saved', true));
                 $this->redirect(array('action' => 'index'));
             } else {
                 $this->Session->setFlash(__('The log could not be saved. Please, try again.', true));
             }
-//			} else {
-//					$this->Session->setFlash(__('The log could not be saved. Please, try again.', true));
-//			}
+
         }
         if (empty($this->data)) {
             $this->data = $this->Log->find('log', array('conditions' => array('id' => $id)));
         }
-        //$uploads = $this->Log->Upload->find('all', array(
-        //				'conditions' => array('log_id'=>$id),
-        //				'fields' => array('Upload.name','Upload.store')
-        //			      ));
+
         Controller::loadModel('Tag');
         $tags = $this->Tag->find('list');
         Controller::loadModel('Logbook');
         $logbooks = $this->Logbook->find('list');
-        //$uploads = $this->Log->Upload->find('list');
+ 
         $this->set(compact('levels', 'tags', 'logbooks'));
-        //$this->set(compact('users', 'levels', 'parentLogs', 'logbooks', 'tags', 'uploads', 'webdavdir'));
+
     }
 
     function delete($id = null) {
@@ -189,24 +164,6 @@ class LogsController extends OlogAppController {
 
         $this->redirect('/olog/logs/index/start:' . $startDate . '/end:' . $endDate . $argumentString);
     }
-
-    private function uploadFiles($id) {
-        $success = true;
-        $this->data['Upload']['log_id'] = $id;
-        if ($this->FileUpload->hasFile) {
-            $directory = WWW_ROOT . 'files' . DS . $id;
-            if (!(file_exists($directory)))
-                mkdir($directory);
-            $this->FileUpload->Uploader->options['uploadDir'] = $directory;
-            $this->FileUpload->uploadDir('files' . DS . $id);
-            $this->FileUpload->processAllFiles();
-            if (!$this->FileUpload->success) {
-                $success = false;
-            }
-        }
-        return $success;
-    }
-
 }
 
 ?>
