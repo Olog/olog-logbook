@@ -46,7 +46,6 @@ echo $this->Html->script('addUpload.js');
                     <div id='logFormTags'><?php echo $this->Form->input('tags', array('type' => 'select', 'multiple' => true)); ?></div>
                     <div id='logFormSubmit'>
                         <?php echo $form->submit('submit', array('disabled' => true)); ?>
-                        echo $form->end(); ?>
                     </div>
                 </div>
             </div>
@@ -56,7 +55,7 @@ echo $this->Html->script('addUpload.js');
                     <label class="fileinput-button">
                         <span>Add files</span>
                         <input type="hidden" name="id" value="<?php //echo $log['id'];   ?>" />
-                        <input type="file" name="file" multiple>
+                        <input type="file" name="file" />
                     </label>
                 </form>
                 <div class="fileupload-content">
