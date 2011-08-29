@@ -218,6 +218,18 @@ ul, li {
     margin-left: 150px;
 }
 
+#pastebutton, #uploadbutton {
+    margin-top: 10px;
+    font-size: 12px;
+    width: 50px;
+}
+
+#SupaApplet {
+    margin-top: 10px;
+    float: left;
+    border: 1px solid;
+}
+
 #header{
     color: #fff;
     background: #006633;
