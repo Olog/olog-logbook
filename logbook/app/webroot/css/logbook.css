@@ -338,14 +338,12 @@ div.description {
 span.logbook {
     font-size: 75%;
     padding:1px 1px;
-    float: right;
     font-weight: bold;
 }
 
 span.tag {
     font-size: 75%;
     padding:1px 1px;
-    float: right;
 }
 
 div.level {

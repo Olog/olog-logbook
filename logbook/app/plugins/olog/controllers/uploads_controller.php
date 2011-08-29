@@ -74,7 +74,7 @@ class UploadsController extends OlogAppController {
 	
 	function proxy() {
 		App::import('Vendor','olog.proxy',array('file'=>'proxy'.DS.'class_http.php'));
-
+		$this->autoRender = false;
 		$proxy_url = isset($this->params['url']['proxy_url'])?rawurldecode($this->params['url']['proxy_url']):false;
 		if (!$proxy_url) {
 		    header("HTTP/1.0 400 Bad Request");
