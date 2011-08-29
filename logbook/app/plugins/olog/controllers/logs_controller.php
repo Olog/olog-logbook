@@ -6,7 +6,7 @@ class LogsController extends OlogAppController {
 
     function beforeFilter() {
         parent::beforeFilter();
-        $this->LogAuth->allowedActions = array('index', 'add', 'view', 'timespanChange');
+        $this->LogAuth->allowedActions = array('index', 'add', 'view', 'timespanChange', 'addproperty');
     }
 
     function index() {
@@ -84,6 +84,37 @@ class LogsController extends OlogAppController {
         //$uploads = $this->Log->Upload->find('list');
         $this->set(compact('levels', 'tags', 'logbooks'));
     }
+    
+    function addproperty(){
+	$this->autoRender = false;
+
+        //if (!empty($this->data)) {
+
+            $logProperty = array();
+
+            foreach($this->params['form'] as $key => $value){
+                if ($key == 'logId'){
+                    $logProperty['log']['id']=$value;
+                    $dbinfo = get_class_vars('DATABASE_CONFIG');
+                    $logProperty['log']['subject']=$dbinfo['olog']['default_subject'];
+                } else {
+                    $logProperty['log']['properties'][str_replace('_', '.', $key)]=$value;
+                }
+            }
+
+            $saved = $this->Log->merge($logProperty);
+            if ($saved) {
+                return 'The property has been saved';
+            } else {
+                /** Todo quick fix for tag validation error not showing up * */
+                $print_error = "";
+                foreach ($this->Log->validationErrors as $errorKey => $error) {
+                    $print_error .= "For input " . $errorKey . ": " . $error . '<br>';
+                }
+                return $print_error . 'The log could not be saved. Please, try again.';
+            }
+        //}
+    }
 
     function edit($id = null) {
         if (!$id && empty($this->data)) {
@@ -91,6 +122,14 @@ class LogsController extends OlogAppController {
             $this->redirect(array('action' => 'index'));
         }
         if (!empty($this->data)) {
+            // Note: Passing 'key->value' as option values, b/c I can't pass keys in a select
+            $properties = array();
+            foreach($this->data['log']['properties'] as $property){
+                list($key,$value)=explode('->',$property);
+                $properties[$key]=$value;
+            }
+            $this->data['log']['properties']=$properties;
+
             if ($this->Log->save($this->data)) {
                 $this->Session->setFlash(__('The log has been saved', true));
                 $this->redirect(array('action' => 'index'));
@@ -164,6 +203,7 @@ class LogsController extends OlogAppController {
 
         $this->redirect('/olog/logs/index/start:' . $startDate . '/end:' . $endDate . $argumentString);
     }
+    
 }
 
 ?>

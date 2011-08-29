@@ -62,7 +62,10 @@ class OlogSource extends RestSource {
           }
       }
     }
-
+    $id_keys = array_keys($fields, 'id');
+    if (is_array($fields) && isset($values[$id_keys[0]])) {
+        $model->request['uri']['path'] = $model->request['uri']['path'] . '/' . $values[$id_keys[0]];
+    }
     $body = $this->xmlFormater($fields, $values);
     $model->request['body']=$body;
     $response = parent::create($model, $fields, $values);
@@ -136,15 +139,19 @@ class OlogSource extends RestSource {
         $level_keys = array_keys($fields, 'level');
         $id_keys = array_keys($fields, 'id');
         if(!isset($id_keys[0])) $body .= '<logs>';
-        $body .='<log level="'.$values[$level_keys[0]].'"'.(isset($id_keys[0])?' id="'.$values[$id_keys[0]].'">':'>');
+        $body .='<log '.(isset($level_keys[0])?'level="'.$values[$level_keys[0]].'"':'').(isset($id_keys[0])?' id="'.$values[$id_keys[0]].'">':'>');
         foreach($fields as $key=>$field){
           if($field=='description'||$field=='subject')
             $body .= '<'.$field.'><![CDATA['.$values[$key].']]></'.$field.'>';
-          if($field=='tags'||$field=='logbooks'){
+          if($field=='tags'||$field=='logbooks'||$field=='properties'){
             if(is_array($values[$key])){
               $body .= '<'.$field.'>';
-              foreach($values[$key] as $child){
-                $body .= '<'.strtolower(Inflector::singularize($field)).' name="'.$child.'"/>';
+              foreach($values[$key] as $childKey=>$child){
+                if($field=='properties'){
+                    $body .= '<'.strtolower(Inflector::singularize($field)).' name="'.$childKey.'" value="'.$child.'"/>';
+                } else {
+                    $body .= '<'.strtolower(Inflector::singularize($field)).' name="'.$child.'"/>';
+                }
               }
               $body .= '</'.$field.'>';
             }

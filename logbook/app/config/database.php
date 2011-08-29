@@ -101,6 +101,10 @@ class DATABASE_CONFIG {
                 'default_subject' => 'Logbook Application',
 		'repository' => 'https://irmis3.nscl.msu.edu:8181/Olog/repository/olog/'
 	);
+	
+	var $irmis = array(
+		'service' => 'http://irmis3.nscl.msu.edu:8080/'
+	);
 
 }
 

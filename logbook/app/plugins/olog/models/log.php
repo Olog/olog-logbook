@@ -94,6 +94,22 @@ class Log extends OlogAppModel {
     }
 
   }
+  public function merge($data = null, $validate = true, $fieldList = array()) {
+    foreach($data['log'] as $field=>$value){
+      list($fields[], $values[]) = array($field, $value);
+    }
+    
+    $db =& ConnectionManager::getDataSource($this->useDbConfig);
+    if (!empty($data['log']['id'])) {
+       return (bool)$db->create($this, $fields, $values);
+    }
+    if (!$db->create($this, $fields, $values)) {
+      $success = false;
+    } else {
+      $success = true;
+    }
+    return $success;
+  }
   
   public function save($data = null, $validate = true, $fieldList = array()) {
     foreach($data['log'] as $field=>$value){
