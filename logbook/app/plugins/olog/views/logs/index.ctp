@@ -567,7 +567,38 @@ foreach ($this->params['named'] as $key => $param) {
 		     div.appendChild(a);
 		     document.getElementById('modalContainer').appendChild(div);
 		  }
-		  $('#modalContainer').dialog({modal:true});
+		  $('#modalContainer').dialog({
+		     modal:true,
+		     title: "add component",
+		     buttons:[{
+			id:"addComponentButton",
+			text:"add component",
+			click: function(){
+			   var logId = $('#componentLogId').val()
+	       
+			   var readNumber = $('#log_'+logId+' .maxComponent').html();
+			   var componentNumber;
+			   if (isNaN(parseInt(readNumber))){
+			      componentNumber = 1;
+			   } else {
+			      componentNumber = parseInt(readNumber)+1;
+			   }
+			   var params = {};
+			   params["component."+componentNumber+".fieldName"] = $('#fieldNameId').val();
+			   params["component."+componentNumber+".serialNumber"] = $('#serialNumberId').val();
+			   params["component."+componentNumber+".hierarchy"] = $('#hierarchyId').val();
+			   params["component."+componentNumber+".componentType"] = $('#componentTypeId').val();
+			   params["logId"] = $('#componentLogId').val();
+			   $.post('<?php echo $base."/".$this->params['plugin']."/".$this->params['controller']."/addproperty"?>', params)
+			   .success(function(data, textStatus) {
+			   $(this).dialog('close');
+			      window.location.replace('<?php echo $base . '/' . $this->params['plugin'] . '/' . $this->params['controller'] . '/' . $this->params['action'] . '/'.$args; ?>');
+			   });
+	       // above redirect causes error to be thrown
+	       //.error(function(jqXHR, textStatus, errorThrown) { alert("error: component was not saved"+errorThrown);});
+			}
+			}]
+		     });
 		  register(10);
 		  $('#componentLogId').val($(this).prop('title'));
 		  return false;
@@ -638,33 +669,4 @@ foreach ($this->params['named'] as $key => $param) {
 	       <td><input name="hierarchy" disabled id="hierarchyId"></td>
 	    </tr>
 	 </table>
-	 <button id="addComponentId" name="addComponent" type="button">Add Component</button>
-	 <script type="text/javascript" >
-	 $(function(){
-	    $('#addComponentId').click(function(){
-	       var logId = $('#componentLogId').val()
-	       
-	       var readNumber = $('#log_'+logId+' .maxComponent').html();
-	       var componentNumber;
-	       if (isNaN(parseInt(readNumber))){
-		  componentNumber = 1;
-	       } else {
-		  componentNumber = parseInt(readNumber)+1;
-	       }
-	       var params = {};
-	       params["component."+componentNumber+".fieldName"] = $('#fieldNameId').val();
-	       params["component."+componentNumber+".serialNumber"] = $('#serialNumberId').val();
-	       params["component."+componentNumber+".hierarchy"] = $('#hierarchyId').val();
-	       params["component."+componentNumber+".componentType"] = $('#componentTypeId').val();
-	       params["logId"] = $('#componentLogId').val();
-	       $.post('<?php echo $base."/".$this->params['plugin']."/".$this->params['controller']."/addproperty"?>', params)
-	       .success(function(data, textStatus) {
-		  $('#modalContainer').dialog('close');
-		  window.location.replace('<?php echo $base . '/' . $this->params['plugin'] . '/' . $this->params['controller'] . '/' . $this->params['action'] . '/'.$args; ?>');
-	       });
-	       // above redirect causes error to be thrown
-	       //.error(function(jqXHR, textStatus, errorThrown) { alert("error: component was not saved"+errorThrown);});
-	    });
-	 });
-	 </script>
 	</div>
