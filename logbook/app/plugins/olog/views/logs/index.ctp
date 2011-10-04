@@ -7,7 +7,6 @@
 //    'update' => 'test', 'frequency' => 10
 //    )
 //);
-
 ?>
 <div id='logsFormAdd' align='right' >
     <a><img id="closeNewLog" style="display:none" src="<?php echo $base; ?>/img/blue-document--minus.png" alt="close new log" class="NewLog_icons" /></a>
@@ -52,10 +51,10 @@ echo $this->Html->script('Supa.js');
             </div>
             <?php echo $form->end(); ?>
             <div style="display:none" class="addFiles" id="fileupload_<?php //echo $log['id'];                        ?>">
-                <form action="<?php echo $base; ?>/olog/uploads/index/id:<?php //echo $log['id'];                        ?>" method="POST" enctype="multipart/form-data">
+                <form action="<?php echo $base; ?>/olog/uploads/index/id:<?php //echo $log['id'];                         ?>" method="POST" enctype="multipart/form-data">
                     <label class="fileinput-button">
                         <span>Add files</span>
-                        <input type="hidden" name="id" value="<?php //echo $log['id'];                        ?>" />
+                        <input type="hidden" name="id" value="<?php //echo $log['id'];                         ?>" />
                         <input type="file" name="file" />
                     </label>
                 </form>
@@ -189,7 +188,7 @@ echo $this->Html->script('Supa.js');
         </script>
 
         <div id="logviews">
-            <?php // Todo:  toggle, when Threaded selected, display collapse/expand   ?>
+            <?php // Todo:  toggle, when Threaded selected, display collapse/expand    ?>
             <?php //echo $this->Html->link(__('Full', true), array('action' => 'add')) . ' | '; ?>
             <?php //echo $this->Html->link(__('Summary', true), array('action' => 'add')) . ' | '; ?>
             <?php //echo $this->Html->link(__('Threaded', true), array('action' => 'threaded')); ?>
@@ -264,77 +263,76 @@ echo $this->Html->script('Supa.js');
                     <td class="subject">
                         <span><?php echo date('d M Y H:i', strtotime($log['createdDate'])) . ', ' . $log['owner']; ?></span>
                         <span style="float:right">
-			   <div>
-			      <span class="logbook" style="float:right">
-				    <img src="<?php
-				    echo $base; ?>/img/17px-Nuvola_apps_bookcase_1_blue.png" />&nbsp;<?php
-				    foreach ($log['logbooks'] as $logbooks) {
-				       if (isset($logbooks['name'])) {
-					  echo $logbooks['name'];
-				       } else {
-					  foreach ($logbooks as $logbook) {
-					     if (isset($logbook['name'])) {
-					        echo $logbook['name'] . '&nbsp;,&nbsp;';
-					     }
-					  }
-				       }
-				    }
-                            ?>,&nbsp;
-			      </span>
-			   </div>
-			   <div>
-			      <span class="tag" style="float:right">
-				<?php 
-				 if (!empty($log['tags']))
-				    echo '<img src="' . $base . '/img/tag-medium.png">&nbsp;';
-				 foreach ($log['tags'] as $tags) {
-				    if (isset($tags['name'])) {
-				       echo $tags['name'];
-				    } else {
-				       foreach ($tags as $tag) {
-					  if (isset($tag['name'])) {
-                                            echo $tag['name'] . '&nbsp;,&nbsp;';
-					  }
-				       }
-				    }
-				 }
-			      ?>
-			      </span>
-			   </div>
-			   <div>
-			      <span style="float:right">
-			      <?php
-				 foreach ($log['properties'] as $properties) {
-				    if (isset($properties['name'])) {
-				       if (preg_match('/component.(\d+).(\w+)/',$properties['name'],$matches)){
-						$components[$matches[1]][$matches[2]]=$properties['value'];
-					     } 
-				    } else {
-				       foreach ($properties as $property) {
-					  if (isset($property['name'])){
-					     if (preg_match('/component.(\d+).(\w+)/',$property['name'],$matches)){
-						$components[$matches[1]][$matches[2]]=$property['value'];
-					     } 
-					  }
-				       }
-				    }
-				 }
-				 foreach($components as $index=>$component){
-				    echo '<div>';
-				    echo '<img id="'.$log['id'].'.'.$component['componentType'].'.'.$index.'" src="'.$base.'/img/task.png"/>&nbsp;'.$component['hierarchy'];
-				    echo '</div>';
-				 }
-				 echo '<div style="display:none" class="maxComponent" >'.max(array_keys($components)).'</div>';
-				 unset($components);
-			      ?>
-			      </span>
-			   </div>
+                            <div>
+                                <span class="logbook" style="float:right">
+                                    <img src="<?php echo $base; ?>/img/17px-Nuvola_apps_bookcase_1_blue.png" />&nbsp;<?php
+            foreach ($log['logbooks'] as $logbooks) {
+                if (isset($logbooks['name'])) {
+                    echo $logbooks['name'];
+                } else {
+                    foreach ($logbooks as $logbook) {
+                        if (isset($logbook['name'])) {
+                            echo $logbook['name'] . '&nbsp;,&nbsp;';
+                        }
+                    }
+                }
+            }
+                ?>,&nbsp;
+                                </span>
+                            </div>
+                            <div>
+                                <span class="tag" style="float:right">
+    <?php
+    if (!empty($log['tags']))
+        echo '<img src="' . $base . '/img/tag-medium.png">&nbsp;';
+    foreach ($log['tags'] as $tags) {
+        if (isset($tags['name'])) {
+            echo $tags['name'];
+        } else {
+            foreach ($tags as $tag) {
+                if (isset($tag['name'])) {
+                    echo $tag['name'] . '&nbsp;,&nbsp;';
+                }
+            }
+        }
+    }
+    ?>
+                                </span>
+                            </div>
+                            <div>
+                                <span style="float:right">
+    <?php
+    foreach ($log['properties'] as $properties) {
+        if (isset($properties['name'])) {
+            if (preg_match('/component.(\d+).(\w+)/', $properties['name'], $matches)) {
+                $components[$matches[1]][$matches[2]] = $properties['value'];
+            }
+        } else {
+            foreach ($properties as $property) {
+                if (isset($property['name'])) {
+                    if (preg_match('/component.(\d+).(\w+)/', $property['name'], $matches)) {
+                        $components[$matches[1]][$matches[2]] = $property['value'];
+                    }
+                }
+            }
+        }
+    }
+    foreach ($components as $index => $component) {
+        echo '<div>';
+        echo '<img id="' . $log['id'] . '.' . $component['componentType'] . '.' . $index . '" src="' . $base . '/img/task.png"/>&nbsp;' . $component['hierarchy'];
+        echo '</div>';
+    }
+    echo '<div style="display:none" class="maxComponent" >' . max(array_keys($components)) . '</div>';
+    unset($components);
+    ?>
+                                </span>
+                            </div>
                         </span>
-			<div>
-			   <div class="level"><?php echo $log['level'] ?></div>
-			</div>
+                        <div>
+                            <div class="level"><?php echo $log['level'] ?></div>
+                        </div>
                         <div class="edited"><?php if ($log['version'] > 0)
-                            echo '[edited] ' . date('d M Y H:i', strtotime($log['modifiedDate'])); ?></div>
+                                    echo '[edited] ' . date('d M Y H:i', strtotime($log['modifiedDate'])); ?></div>
                         <div class='description'><?php echo (!empty($log['description']) ? nl2br(htmlentities($log['description'])) : ''); ?></div>
 
                         <div id="fileupload_<?php echo $log['id'] ?>" >
@@ -392,7 +390,7 @@ echo $this->Html->script('Supa.js');
                                     <a style="padding: 0px 0px 0px 20px;" href="<?php echo $base . '/' . $this->params['plugin'] . '/' . $this->params['controller'] . '/edit/' . $log['id']; ?>">
                                         <img border="0" src="<?php echo $base; ?>/img/blue-document--pencil.png" alt="edit" />
                                     </a>
-	 <span style="padding: 0px 0px 0px 0px;" id="componentAdd_<?php echo $log['id'];?>" title="<?php echo  $log['id'];?>">
+                                    <span style="padding: 0px 0px 0px 0px;" id="componentAdd_<?php echo $log['id']; ?>" title="<?php echo $log['id']; ?>">
                                         <img border="0" src="<?php echo $base; ?>/img/task--plus.png" alt="component" />
                                     </span>
                                     <span style="padding: 0px 0px 0px 0px;" logid="<?php echo $log['id']; ?>" id="imageAdd_<?php echo $log['id']; ?>">
@@ -410,20 +408,20 @@ echo $this->Html->script('Supa.js');
                             </script>
 
                     </tr>
-                <?php endforeach; ?>
+<?php endforeach; ?>
             </table>
             <p>
-                <?php
-                echo $this->Paginator->counter(array(
-                    'format' => __('Page %page% of %pages%, showing %current% records out of %count% total, starting on record %start%, ending on %end%', true)
-                ));
-                ?>	</p>
+<?php
+echo $this->Paginator->counter(array(
+    'format' => __('Page %page% of %pages%, showing %current% records out of %count% total, starting on record %start%, ending on %end%', true)
+));
+?>	</p>
 
             <div class="paging">
-                <?php echo $this->Paginator->prev('<< ' . __('previous', true), array(), null, array('class' => 'disabled')); ?>
+<?php echo $this->Paginator->prev('<< ' . __('previous', true), array(), null, array('class' => 'disabled')); ?>
                 | 	<?php echo $this->Paginator->numbers(); ?>
                 |
-                <?php echo $this->Paginator->next(__('next', true) . ' >>', array(), null, array('class' => 'disabled')); ?>
+<?php echo $this->Paginator->next(__('next', true) . ' >>', array(), null, array('class' => 'disabled')); ?>
             </div>
         </div>
         <script type="text/javascript" >
@@ -467,106 +465,106 @@ foreach ($this->params['named'] as $key => $param) {
         }
     }).watermark('Search...');
         </script>
-	<?php
-	 $dbinfo = get_class_vars('DATABASE_CONFIG');
-	 $service = $dbinfo['irmis']['service'];
-	?>
-   <script type="text/javascript" >
-	 function register(count){
-	    var minus; //count-- is not supported?
-	    try {
-	       document.applet1.registerEvent("valueChanged","componentChanged");
-	    }catch (ex) {
-	       if (count > 0) {
-		  minus = count-1;
-		  setTimeout(function(){register(minus);},2000);
-	       } else {
-		  alert(ex);
-	       }
-	    }
-	 }
-	 function componentChanged(res1) {
-	    $('#componentTypeId').val(res1.getNewValue().getComponentType().getName());
-	    $('#serialNumberId').val(res1.getNewValue().getSerialNumber());
-	    $('#fieldNameId').val(res1.getNewValue().getFieldName());
+<?php
+$dbinfo = get_class_vars('DATABASE_CONFIG');
+$service = $dbinfo['irmis']['service'];
+?>
+        <script type="text/javascript" >
+            function register(count){
+                var minus; //count-- is not supported?
+                try {
+                    document.applet1.registerEvent("valueChanged","componentChanged");
+                }catch (ex) {
+                    if (count > 0) {
+                        minus = count-1;
+                        setTimeout(function(){register(minus);},2000);
+                    } else {
+                        alert(ex);
+                    }
+                }
+            }
+            function componentChanged(res1) {
+                $('#componentTypeId').val(res1.getNewValue().getComponentType().getName());
+                $('#serialNumberId').val(res1.getNewValue().getSerialNumber());
+                $('#fieldNameId').val(res1.getNewValue().getFieldName());
 	    
-	    var housing = document.applet1.Packages.gov.bnl.irmis.components.api.RelType.valueOf('HOUSING');
-	    var str = res1.getNewValue().getFieldName();
-	    if (str == null) str = res1.getNewValue().getComponentType().getName();
-	    var list = res1.getNewValue().getParents(housing).iterator();
-	    var current;
-	    while(list.hasNext()){
-	       current = list.next();
-	       if (current.getParent().getFieldName() == null){
-		  str = current.getParent().getComponentType().getName()+":"+str;
-	       } else {
-		  str = current.getParent().getFieldName()+":"+str;
-	       }
-	       list = current.getParent().getParents(housing).iterator();
-	    }
-	    $('#hierarchyId').val(str);
-	 }
+                var housing = document.applet1.Packages.gov.bnl.irmis.components.api.RelType.valueOf('HOUSING');
+                var str = res1.getNewValue().getFieldName();
+                if (str == null) str = res1.getNewValue().getComponentType().getName();
+                var list = res1.getNewValue().getParents(housing).iterator();
+                var current;
+                while(list.hasNext()){
+                    current = list.next();
+                    if (current.getParent().getFieldName() == null){
+                        str = current.getParent().getComponentType().getName()+":"+str;
+                    } else {
+                        str = current.getParent().getFieldName()+":"+str;
+                    }
+                    list = current.getParent().getParents(housing).iterator();
+                }
+                $('#hierarchyId').val(str);
+            }
             $(function() {
                 $( 'span[id^="componentAdd_"]' ).click(function() {
-		  if(window.opera){
-		     var appletContainer=document.getElementById('modalContainer');
-		     appletContainer.innerHTML='<div title="Add Components"><applet code="MyComponentBrowserApplet"'+
-			'archive="<?php echo $service; ?>IRMISApplets/myComponentBrowserApplet.jar,<?php echo $service; ?>IRMISApplets/IRMISComponentsApplets.jar,<?php echo $service; ?>IRMISApplets/IRMISComponentsAPI.jar"'+
-			'width="230"'+
-			'height="300"'+
-			'id="applet1"'+
-			'>'+
-			'<param name="irmis.service" value="<?php echo $service; ?>IRMISComponentsService" />'+
-			'<param name="java.util.logging.config.file" value="<?php echo $service; ?>IRMISComponents/logging.properties" />'+
-			'<param name="progressbar" value="true" />'+
-			'<param name="draggable" value="true" />'+
-			'<param name="separate_jvm" value="true">'+
-			'<param name="image" value="img/image--plus.png">'+
-			'<param name="boxborder" value="false">'+
-			'<param name="centerimage" value="true">'+
-			'</applet></div>';
-		  }else{
-		     document.getElementById('modalContainer').removeChild(document.getElementById('appletContainer'));
-		     var div=document.createElement('div');
-		     div.setAttribute('title','Add Components');
-		     div.setAttribute('id','appletContainer')
-		     var a=document.createElement('applet');
-		     a.setAttribute('code','MyComponentBrowserApplet');
-		     a.setAttribute('archive','<?php echo $service; ?>IRMISApplets/myComponentBrowserApplet.jar,<?php echo $service; ?>IRMISApplets/IRMISComponentsApplets.jar,<?php echo $service; ?>IRMISApplets/IRMISComponentsAPI.jar');
-		     a.setAttribute('width','265');
-		     a.setAttribute('height','300');
-		     a.setAttribute('id','applet1');
-		     param1=document.createElement('param');
-		     param1.setAttribute('name','irmis.service');
-		     param1.setAttribute('value','<?php echo $service; ?>IRMISComponentsService');
-		     param2=document.createElement('param');
-		     param2.setAttribute('name','java.util.logging.config.file');
-		     param2.setAttribute('value','<?php echo $service; ?>IRMISComponents/logging.properties');
-		     param3=document.createElement('param');
-		     param3.setAttribute('name','progressbar');
-		     param3.setAttribute('value','true');
-		     param4=document.createElement('param');
-		     param4.setAttribute('name','draggable');
-		     param4.setAttribute('value','true');
-		     param5=document.createElement('param');
-		     param5.setAttribute('name','separate_jvm');
-		     param5.setAttribute('value','true');
-		     param6=document.createElement('param');
-		     param6.setAttribute('name','boxborder');
-		     param6.setAttribute('value','false');
-		     param7=document.createElement('param');
-		     param7.setAttribute('name','centerimage');
-		     param7.setAttribute('value','true');
-		     a.appendChild(param1);
-		     a.appendChild(param2);
-		     a.appendChild(param3);
-		     a.appendChild(param4);
-		     a.appendChild(param5);
-		     a.appendChild(param6);
-		     a.appendChild(param7);
-		     div.appendChild(a);
-		     document.getElementById('modalContainer').appendChild(div);
-		  }
+                    if(window.opera){
+                        var appletContainer=document.getElementById('modalContainer');
+                        appletContainer.innerHTML='<div title="Add Components"><applet code="MyComponentBrowserApplet"'+
+                            'archive="<?php echo $service; ?>IRMISApplets/myComponentBrowserApplet.jar,<?php echo $service; ?>IRMISApplets/IRMISComponentsApplets.jar,<?php echo $service; ?>IRMISApplets/IRMISComponentsAPI.jar"'+
+                            'width="230"'+
+                            'height="300"'+
+                            'id="applet1"'+
+                            '>'+
+                            '<param name="irmis.service" value="<?php echo $service; ?>IRMISComponentsService" />'+
+                            '<param name="java.util.logging.config.file" value="<?php echo $service; ?>IRMISComponents/logging.properties" />'+
+                            '<param name="progressbar" value="true" />'+
+                            '<param name="draggable" value="true" />'+
+                            '<param name="separate_jvm" value="true">'+
+                            '<param name="image" value="img/image--plus.png">'+
+                            '<param name="boxborder" value="false">'+
+                            '<param name="centerimage" value="true">'+
+                            '</applet></div>';
+                    }else{
+                        document.getElementById('modalContainer').removeChild(document.getElementById('appletContainer'));
+                        var div=document.createElement('div');
+                        div.setAttribute('title','Add Components');
+                        div.setAttribute('id','appletContainer')
+                        var a=document.createElement('applet');
+                        a.setAttribute('code','MyComponentBrowserApplet');
+                        a.setAttribute('archive','<?php echo $service; ?>IRMISApplets/myComponentBrowserApplet.jar,<?php echo $service; ?>IRMISApplets/IRMISComponentsApplets.jar,<?php echo $service; ?>IRMISApplets/IRMISComponentsAPI.jar');
+                        a.setAttribute('width','265');
+                        a.setAttribute('height','300');
+                        a.setAttribute('id','applet1');
+                        param1=document.createElement('param');
+                        param1.setAttribute('name','irmis.service');
+                        param1.setAttribute('value','<?php echo $service; ?>IRMISComponentsService');
+                        param2=document.createElement('param');
+                        param2.setAttribute('name','java.util.logging.config.file');
+                        param2.setAttribute('value','<?php echo $service; ?>IRMISComponents/logging.properties');
+                        param3=document.createElement('param');
+                        param3.setAttribute('name','progressbar');
+                        param3.setAttribute('value','true');
+                        param4=document.createElement('param');
+                        param4.setAttribute('name','draggable');
+                        param4.setAttribute('value','true');
+                        param5=document.createElement('param');
+                        param5.setAttribute('name','separate_jvm');
+                        param5.setAttribute('value','true');
+                        param6=document.createElement('param');
+                        param6.setAttribute('name','boxborder');
+                        param6.setAttribute('value','false');
+                        param7=document.createElement('param');
+                        param7.setAttribute('name','centerimage');
+                        param7.setAttribute('value','true');
+                        a.appendChild(param1);
+                        a.appendChild(param2);
+                        a.appendChild(param3);
+                        a.appendChild(param4);
+                        a.appendChild(param5);
+                        a.appendChild(param6);
+                        a.appendChild(param7);
+                        div.appendChild(a);
+                        document.getElementById('modalContainer').appendChild(div);
+                    }
 		  $('#modalContainer').dialog({
 		     modal:true,
 		     title: "add component",
@@ -599,9 +597,9 @@ foreach ($this->params['named'] as $key => $param) {
 			}
 			}]
 		     });
-		  register(10);
-		  $('#componentLogId').val($(this).prop('title'));
-		  return false;
+                    register(10);
+                    $('#componentLogId').val($(this).prop('title'));
+                    return false;
                 });
             });
             
@@ -651,22 +649,23 @@ foreach ($this->params['named'] as $key => $param) {
                 });
             });
         </script>
-        <?php
-        echo $this->Html->script('FileUpload/jquery-ui-1.8.13.custom.min');
-        echo $this->Html->script('FileUpload/jquery.iframe-transport');
-        echo $this->Html->script('FileUpload/jquery.fileupload');
-        echo $this->Html->script('FileUpload/jquery.fileupload-ui');
-        echo $this->Html->script('FileUpload/jquery.application');
-        echo $this->Html->script('FileUpload/jquery.tmpl.min');
-        ?>
-	<div id="modalContainer"><div id="appletContainer"></div>
-	 <table width="500" border="0" cellspacing="0" cellpadding="0" style="display:none">
-	    <tr>
-	       <td><input name="componentLogId" disabled id="componentLogId"></td>
-	       <td><input name="componentType" disabled id="componentTypeId"></td>
-	       <td><input name="serialNumber" disabled id="serialNumberId"></td>
-	       <td><input name="fieldName" disabled id="fieldNameId"></td>
-	       <td><input name="hierarchy" disabled id="hierarchyId"></td>
-	    </tr>
-	 </table>
-	</div>
+<?php
+echo $this->Html->script('FileUpload/jquery-ui-1.8.13.custom.min');
+echo $this->Html->script('FileUpload/jquery.iframe-transport');
+echo $this->Html->script('FileUpload/jquery.fileupload');
+echo $this->Html->script('FileUpload/jquery.fileupload-ui');
+echo $this->Html->script('FileUpload/jquery.application');
+echo $this->Html->script('FileUpload/jquery.tmpl.min');
+?>
+        <div id="modalContainer"><div id="appletContainer"></div>
+            <table width="500" border="0" cellspacing="0" cellpadding="0" style="display:none">
+                <tr>
+                    <td><input name="componentLogId" disabled id="componentLogId"></td>
+                    <td><input name="componentType" disabled id="componentTypeId"></td>
+                    <td><input name="serialNumber" disabled id="serialNumberId"></td>
+                    <td><input name="fieldName" disabled id="fieldNameId"></td>
+                    <td><input name="hierarchy" disabled id="hierarchyId"></td>
+                </tr>
+            </table>
+        </div>
+
