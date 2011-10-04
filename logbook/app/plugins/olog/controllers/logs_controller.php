@@ -17,12 +17,11 @@ class LogsController extends OlogAppController {
         );
         $this->set('logs', $this->paginate('Log'));
 
-        Controller::loadModel('Level');
-        $levelsInDb = $this->Level->find('list');
-        foreach ($levelsInDb as $level) {
-            $levels[$level] = $level;
-        }
-        $this->set('levels', $levels);
+        $levels = array("Info" => "Info",
+            "Problem" => "Problem",
+            "Request" => "Request",
+            "Suggestion" => "Suggestion",
+            "Urgent" => "Urgent");
 
         Controller::loadModel('Logbook');
         $logbooks = $this->Logbook->find('list');
@@ -39,7 +38,7 @@ class LogsController extends OlogAppController {
         $this->set('session', $this->Session);
         $this->set('base', $this->base);
 
-        $this->set(compact('tags', 'argumentString'));
+        $this->set(compact('tags', 'levels', 'argumentString'));
     }
 
     // TODO - Determine whether this action and its associated view is necessary. It looks like it currently isn't being used.
