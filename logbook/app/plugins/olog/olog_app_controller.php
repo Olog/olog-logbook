@@ -3,7 +3,6 @@
 class OlogAppController extends PluginManagerAppController {
   
   var $components = array('Security','LogAuth','Session');
-//  var $helpers = array('Html','Form','Session','Xml','Js' => array('Jquery'));
   var $helpers = array('Html','Form','Session','Xml');
   
   function beforeFilter() { 
@@ -57,16 +56,18 @@ class OlogAppController extends PluginManagerAppController {
      * @return boolean
      */
     protected function _numeric ($array = array()) {
+        $isNumeric = true;
+        
     	if (empty($array)) {
     		return null;
     	}
     	$keys = array_keys($array);
 	foreach ($keys as $key) {
 	    if (!is_numeric($key)) {
-	    	return false;
+	    	return !$isNumeric;
 	    }
 	}
-	return true;
+	return $isNumeric;
     }
 }
 ?>
