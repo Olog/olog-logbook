@@ -15,7 +15,9 @@
 $(function () {
 
     // Initialize the jQuery File Upload widget:
-    $('div[id^="fileupload_"]').fileupload();
+    $('div[id^="fileupload_"]').each(function(index,element){
+        $(this).fileupload({dropZone: $(this).parent()});
+    });
 
     // Load existing files:
     $('div[id^="fileupload_"]').each(function(index,element){
