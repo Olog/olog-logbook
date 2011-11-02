@@ -50,11 +50,11 @@ echo $this->Html->script('Supa.js');
                 </div>
             </div>
             <?php echo $form->end(); ?>
-            <div style="display:none" class="addFiles" id="fileupload_<?php //echo $log['id'];                        ?>">
-                <form action="<?php echo $base; ?>/olog/uploads/index/id:<?php //echo $log['id'];                         ?>" method="POST" enctype="multipart/form-data">
+            <div style="display:none" class="addFiles" id="fileupload_<?php //echo $log['id'];                         ?>">
+                <form action="<?php echo $base; ?>/olog/uploads/index/id:<?php //echo $log['id'];                          ?>" method="POST" enctype="multipart/form-data">
                     <label class="fileinput-button">
                         <span>Add files</span>
-                        <input type="hidden" name="id" value="<?php //echo $log['id'];                         ?>" />
+                        <input type="hidden" name="id" value="<?php //echo $log['id'];                          ?>" />
                         <input type="file" name="file" />
                     </label>
                 </form>
@@ -282,49 +282,49 @@ echo $this->Html->script('Supa.js');
                             </div>
                             <div>
                                 <span class="tag" style="float:right">
-    <?php
-    if (!empty($log['tags']))
-        echo '<img src="' . $base . '/img/tag-medium.png">&nbsp;';
-    foreach ($log['tags'] as $tags) {
-        if (isset($tags['name'])) {
-            echo $tags['name'];
-        } else {
-            foreach ($tags as $tag) {
-                if (isset($tag['name'])) {
-                    echo $tag['name'] . '&nbsp;,&nbsp;';
-                }
-            }
-        }
-    }
-    ?>
+                                    <?php
+                                    if (!empty($log['tags']))
+                                        echo '<img src="' . $base . '/img/tag-medium.png">&nbsp;';
+                                    foreach ($log['tags'] as $tags) {
+                                        if (isset($tags['name'])) {
+                                            echo $tags['name'];
+                                        } else {
+                                            foreach ($tags as $tag) {
+                                                if (isset($tag['name'])) {
+                                                    echo $tag['name'] . '&nbsp;,&nbsp;';
+                                                }
+                                            }
+                                        }
+                                    }
+                                    ?>
                                 </span>
                             </div>
                             <div>
                                 <span style="float:right">
-    <?php
-    foreach ($log['properties'] as $properties) {
-        if (isset($properties['name'])) {
-            if (preg_match('/component.(\d+).(\w+)/', $properties['name'], $matches)) {
-                $components[$matches[1]][$matches[2]] = $properties['value'];
-            }
-        } else {
-            foreach ($properties as $property) {
-                if (isset($property['name'])) {
-                    if (preg_match('/component.(\d+).(\w+)/', $property['name'], $matches)) {
-                        $components[$matches[1]][$matches[2]] = $property['value'];
-                    }
-                }
-            }
-        }
-    }
-    foreach ($components as $index => $component) {
-        echo '<div>';
-        echo '<img id="' . $log['id'] . '.' . $component['componentType'] . '.' . $index . '" src="' . $base . '/img/task.png"/>&nbsp;' . $component['hierarchy'];
-        echo '</div>';
-    }
-    echo '<div style="display:none" class="maxComponent" >' . max(array_keys($components)) . '</div>';
-    unset($components);
-    ?>
+                                    <?php
+                                    foreach ($log['properties'] as $properties) {
+                                        if (isset($properties['name'])) {
+                                            if (preg_match('/component.(\d+).(\w+)/', $properties['name'], $matches)) {
+                                                $components[$matches[1]][$matches[2]] = $properties['value'];
+                                            }
+                                        } else {
+                                            foreach ($properties as $property) {
+                                                if (isset($property['name'])) {
+                                                    if (preg_match('/component.(\d+).(\w+)/', $property['name'], $matches)) {
+                                                        $components[$matches[1]][$matches[2]] = $property['value'];
+                                                    }
+                                                }
+                                            }
+                                        }
+                                    }
+                                    foreach ($components as $index => $component) {
+                                        echo '<div>';
+                                        echo '<img id="' . $log['id'] . '.' . $component['componentType'] . '.' . $index . '" src="' . $base . '/img/task.png"/>&nbsp;' . $component['hierarchy'];
+                                        echo '</div>';
+                                    }
+                                    echo '<div style="display:none" class="maxComponent" >' . max(array_keys($components)) . '</div>';
+                                    unset($components);
+                                    ?>
                                 </span>
                             </div>
                         </span>
@@ -381,20 +381,20 @@ echo $this->Html->script('Supa.js');
                                 </div>
                             </div>
 
-                            <div class="actionButton">
+                            <div class="actionButton" style="display: none"><label>actions</label>
                                 <form style='padding: 0px' action="<?php echo $base; ?>/olog/uploads/index/id:<?php echo $log['id']; ?>" method="POST" enctype="multipart/form-data">
                                     <input type="file" name="file" id="fileItem">
 
 
                                     <input type="hidden" name="id" value="<?php echo $log['id']; ?>" />
                                     <a style="padding: 0px 0px 0px 20px;" href="<?php echo $base . '/' . $this->params['plugin'] . '/' . $this->params['controller'] . '/edit/' . $log['id']; ?>">
-                                        <img border="0" src="<?php echo $base; ?>/img/blue-document--pencil.png" alt="edit" />
+                                        <img border="0" src="<?php echo $base; ?>/img/blue-document--pencil.png" title="edit log" alt="edit log" />
                                     </a>
                                     <span style="padding: 0px 0px 0px 0px;" id="componentAdd_<?php echo $log['id']; ?>" title="<?php echo $log['id']; ?>">
-                                        <img border="0" src="<?php echo $base; ?>/img/task--plus.png" alt="component" />
+                                        <img border="0" src="<?php echo $base; ?>/img/task--plus.png" title="add component" alt="add component" />
                                     </span>
                                     <span style="padding: 0px 0px 0px 0px;" logid="<?php echo $log['id']; ?>" id="imageAdd_<?php echo $log['id']; ?>">
-                                        <img border="0" src="<?php echo $base; ?>/img/clipboard--plus.png" alt="paste from clipboard" />
+                                        <img border="0" src="<?php echo $base; ?>/img/clipboard--plus.png" title="paste from clipboard" alt="paste from clipboard" />
                                     </span>
                                 </form>
                             </div>
@@ -408,20 +408,20 @@ echo $this->Html->script('Supa.js');
                             </script>
 
                     </tr>
-<?php endforeach; ?>
+                <?php endforeach; ?>
             </table>
             <p>
-<?php
-echo $this->Paginator->counter(array(
-    'format' => __('Page %page% of %pages%, showing %current% records out of %count% total, starting on record %start%, ending on %end%', true)
-));
-?>	</p>
+                <?php
+                echo $this->Paginator->counter(array(
+                    'format' => __('Page %page% of %pages%, showing %current% records out of %count% total, starting on record %start%, ending on %end%', true)
+                ));
+                ?>	</p>
 
             <div class="paging">
-<?php echo $this->Paginator->prev('<< ' . __('previous', true), array(), null, array('class' => 'disabled')); ?>
+                <?php echo $this->Paginator->prev('<< ' . __('previous', true), array(), null, array('class' => 'disabled')); ?>
                 | 	<?php echo $this->Paginator->numbers(); ?>
                 |
-<?php echo $this->Paginator->next(__('next', true) . ' >>', array(), null, array('class' => 'disabled')); ?>
+                <?php echo $this->Paginator->next(__('next', true) . ' >>', array(), null, array('class' => 'disabled')); ?>
             </div>
         </div>
         <script type="text/javascript" >
@@ -464,11 +464,19 @@ foreach ($this->params['named'] as $key => $param) {
             window.location.replace('<?php echo $base . '/' . $this->params['plugin'] . '/' . $this->params['controller'] . '/' . $this->params['action'] . '/'; ?>' + search + '<?php echo $args; ?>');
         }
     }).watermark('Search...');
+    
+    $('tr[id^="log_"]').hover(
+    function() { // Hover in
+        $(this).find('.actionButton').show(); 
+    }, 
+    function() { // Hover out
+        $(this).find('.actionButton').hide();
+    });
         </script>
-<?php
-$dbinfo = get_class_vars('DATABASE_CONFIG');
-$service = $dbinfo['irmis']['service'];
-?>
+        <?php
+        $dbinfo = get_class_vars('DATABASE_CONFIG');
+        $service = $dbinfo['irmis']['service'];
+        ?>
         <script type="text/javascript" >
             function register(count){
                 var minus; //count-- is not supported?
@@ -565,38 +573,38 @@ $service = $dbinfo['irmis']['service'];
                         div.appendChild(a);
                         document.getElementById('modalContainer').appendChild(div);
                     }
-		  $('#modalContainer').dialog({
-		     modal:true,
-		     title: "add component",
-		     buttons:[{
-			id:"addComponentButton",
-			text:"add component",
-			click: function(){
-			   var logId = $('#componentLogId').val()
+                    $('#modalContainer').dialog({
+                        modal:true,
+                        title: "add component",
+                        buttons:[{
+                                id:"addComponentButton",
+                                text:"add component",
+                                click: function(){
+                                    var logId = $('#componentLogId').val()
 	       
-			   var readNumber = $('#log_'+logId+' .maxComponent').html();
-			   var componentNumber;
-			   if (isNaN(parseInt(readNumber))){
-			      componentNumber = 1;
-			   } else {
-			      componentNumber = parseInt(readNumber)+1;
-			   }
-			   var params = {};
-			   params["component."+componentNumber+".fieldName"] = $('#fieldNameId').val();
-			   params["component."+componentNumber+".serialNumber"] = $('#serialNumberId').val();
-			   params["component."+componentNumber+".hierarchy"] = $('#hierarchyId').val();
-			   params["component."+componentNumber+".componentType"] = $('#componentTypeId').val();
-			   params["logId"] = $('#componentLogId').val();
-			   $.post('<?php echo $base."/".$this->params['plugin']."/".$this->params['controller']."/addproperty"?>', params)
-			   .success(function(data, textStatus) {
-			   $(this).dialog('close');
-			      window.location.replace('<?php echo $base . '/' . $this->params['plugin'] . '/' . $this->params['controller'] . '/' . $this->params['action'] . '/'.$args; ?>');
-			   });
-	       // above redirect causes error to be thrown
-	       //.error(function(jqXHR, textStatus, errorThrown) { alert("error: component was not saved"+errorThrown);});
-			}
-			}]
-		     });
+                                    var readNumber = $('#log_'+logId+' .maxComponent').html();
+                                    var componentNumber;
+                                    if (isNaN(parseInt(readNumber))){
+                                        componentNumber = 1;
+                                    } else {
+                                        componentNumber = parseInt(readNumber)+1;
+                                    }
+                                    var params = {};
+                                    params["component."+componentNumber+".fieldName"] = $('#fieldNameId').val();
+                                    params["component."+componentNumber+".serialNumber"] = $('#serialNumberId').val();
+                                    params["component."+componentNumber+".hierarchy"] = $('#hierarchyId').val();
+                                    params["component."+componentNumber+".componentType"] = $('#componentTypeId').val();
+                                    params["logId"] = $('#componentLogId').val();
+                                    $.post('<?php echo $base . "/" . $this->params['plugin'] . "/" . $this->params['controller'] . "/addproperty" ?>', params)
+                                    .success(function(data, textStatus) {
+                                        $(this).dialog('close');
+                                        window.location.replace('<?php echo $base . '/' . $this->params['plugin'] . '/' . $this->params['controller'] . '/' . $this->params['action'] . '/' . $args; ?>');
+                                    });
+                                    // above redirect causes error to be thrown
+                                    //.error(function(jqXHR, textStatus, errorThrown) { alert("error: component was not saved"+errorThrown);});
+                                }
+                            }]
+                    });
                     register(10);
                     $('#componentLogId').val($(this).prop('title'));
                     return false;
@@ -649,14 +657,14 @@ $service = $dbinfo['irmis']['service'];
                 });
             });
         </script>
-<?php
-echo $this->Html->script('FileUpload/jquery-ui-1.8.13.custom.min');
-echo $this->Html->script('FileUpload/jquery.iframe-transport');
-echo $this->Html->script('FileUpload/jquery.fileupload');
-echo $this->Html->script('FileUpload/jquery.fileupload-ui');
-echo $this->Html->script('FileUpload/jquery.application');
-echo $this->Html->script('FileUpload/jquery.tmpl.min');
-?>
+        <?php
+        echo $this->Html->script('FileUpload/jquery-ui-1.8.13.custom.min');
+        echo $this->Html->script('FileUpload/jquery.iframe-transport');
+        echo $this->Html->script('FileUpload/jquery.fileupload');
+        echo $this->Html->script('FileUpload/jquery.fileupload-ui');
+        echo $this->Html->script('FileUpload/jquery.application');
+        echo $this->Html->script('FileUpload/jquery.tmpl.min');
+        ?>
         <div id="modalContainer"><div id="appletContainer"></div>
             <table width="500" border="0" cellspacing="0" cellpadding="0" style="display:none">
                 <tr>

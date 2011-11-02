@@ -21,6 +21,7 @@
     padding:0;
 }
 
+
 /** General Style Info **/
 /** Color wheel #0468BF #305473 #6997BF #0477BF #B6DBF2 **/
 /** Or #011640 #2D6DA6 #6997BF #F29D35 #730202 **/
@@ -365,6 +366,20 @@ div.level {
 div.actionButton {
     float:right;
     height:16px;
+    width: 120px;
+    border-top: dashed 1px;
+    border-left: dashed 1px;
+    border-right: dashed 1px;
+    padding: 3px;
+    margin-bottom: -5px;
+    background-color: #D2DDAA;
+}
+div.actionButton label {
+    float:left;
+    height:16px;
+    padding-right: 5px;
+    font-size: 10px;
+    font-weight: bold;
 }
 a img {
     cursor:pointer;
