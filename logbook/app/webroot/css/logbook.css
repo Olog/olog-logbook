@@ -73,6 +73,11 @@ h4 {
 ul, li {
     margin: 0 12px;
 }
+
+#copypaste_action {
+    display: inline-block;
+}
+
 .addFiles {
     padding-top: 25px;
 }
@@ -106,6 +111,10 @@ ul, li {
     padding-right: 10px;
 }
 
+#closeNewLog, #addNewLog {
+    cursor: pointer;
+}
+
 #logFormCredentials {
     margin: 0 auto;
     height: 25px;
@@ -134,7 +143,6 @@ ul, li {
 
 #logFormDescription {
     width: 500px;
-    
 }
 
 #logFormSelects {
@@ -142,6 +150,7 @@ ul, li {
     margin: 0 auto;
     width: 200px;
     margin-left: 525px;
+    height: inherit;
 }
 #logFormFieldset {
     width: 725px;
@@ -152,12 +161,11 @@ ul, li {
 }
 
 #logFormLogbooks {
-    width: 200px;
     height: 70px;
 }
 
 #logFormTags {
-    width: 200px;
+    height: 85px;
 }
 
 #logFormUploads {
@@ -166,8 +174,7 @@ ul, li {
 }
 
 #logFormSubmit {
-    float: right;
-    height: 45px;
+    height: 30px;
 }
 
 #addNewFile {
@@ -194,14 +201,24 @@ ul, li {
 }
 
 #quickfilters {
-    font-weight: normal;
-    padding-bottom: 5px;
-    text-align: right;
-    float: right;
+    height: 75px; 
+    padding-top: 10px;
+    padding-left: 20px;
+    padding-right: 20px;
+    position: relative;
+    background: #FFFFFF url('../img/logbook_nscl.jpg') no-repeat top left;
 }
 #quickfilters select {
     font-weight: normal;
-    font-size: 75%;
+    font-size: 10px;
+}
+
+#search_input {
+
+}
+
+#search_filters {
+
 }
 
 #container {
@@ -209,7 +226,9 @@ ul, li {
     width: 900px;
 }
 
-
+#search {
+    margin-bottom: 5px;
+}
 
 #searchItem {
     position: absolute;
@@ -221,7 +240,7 @@ ul, li {
 
 #pastebutton, #uploadbutton {
     margin-top: 10px;
-    font-size: 12px;
+    font-size: 10px;
     width: 50px;
 }
 
@@ -286,8 +305,8 @@ div.actions h3 {
 
 /** Tables **/
 div.edited {
-    font-size: 7px;
-    padding:2px 2px;
+    float: right;
+    font-size: 80%;
     font-weight: bold;
 }
 table {
@@ -328,9 +347,22 @@ table tr:nth-child(2n) td {
 table .altrow {
     background: #f5f5f5;
 }
+
+table.logs {
+    border-top: 1px solid #ccc;
+    margin-top: 10px;
+}
+
 td.id {
 
 }
+
+#no_logs {
+    padding-top: 15px;
+    font-weight: bold;
+    font-size: 14px;
+}
+
 td.date {
     width: 225px;
 }
@@ -339,13 +371,6 @@ td.level {
 }
 td.subject {
     
-}
-div.description {
-    resize: none;
-}
-div.description {
-    padding-top: 5px;
-    padding-bottom: 5px;
 }
 
 span.logbook {
@@ -359,14 +384,45 @@ span.tag {
     padding:1px 1px;
 }
 
-div.level {
-    font-size: 90%;
-    padding:1px 1px;
+
+div.date_and_owner {
+    float: left;
 }
-div.actionButton {
+
+div.logbooks {
+    float: right;
+    font-size: 10px;
+}
+
+div.level {
+    float: left;
+    font-size: 90%;
+}
+
+div.tag {
+    float: right;
+    font-size: 10px;
+}
+
+div.properties {
+    float: right;
+    font-size: 10px;
+}
+
+div.description {
+    resize: none;
+    padding-top: 20px;
+    padding-bottom: 5px;
+}
+
+.placeholder {
+    height: 20px;
+}
+
+div.action_buttons {
     float:right;
-    height:16px;
-    width: 120px;
+    height: 16px;
+    width: 130px;
     border-top: dashed 1px;
     border-left: dashed 1px;
     border-right: dashed 1px;
@@ -374,13 +430,18 @@ div.actionButton {
     margin-bottom: -5px;
     background-color: #D2DDAA;
 }
-div.actionButton label {
+div.action_buttons label {
     float:left;
     height:16px;
     padding-right: 5px;
     font-size: 10px;
     font-weight: bold;
 }
+
+.clear {
+    clear: both;
+}
+
 a img {
     cursor:pointer;
 }
