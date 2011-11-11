@@ -2,6 +2,12 @@
     <div id="searching">
         <?php echo $this->element('searching'); ?>
     </div>
+    <div class="paging">
+        <?php echo $this->Paginator->prev('<< ' . __('previous', true), array(), null, array('class' => 'disabled')); ?>
+        | 	<?php echo $this->Paginator->numbers(); ?>
+        |
+        <?php echo $this->Paginator->next(__('next', true) . ' >>', array(), null, array('class' => 'disabled')); ?>
+    </div>
     <table class="logs" cellpadding="0" cellspacing="0">
         <?php
         $i = 0;
