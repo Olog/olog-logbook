@@ -1,3 +1,7 @@
+<?php
+echo $this->Html->script('jquery.phpdate.js');
+?>
+
 <div id="quickfilters">
     <?php
     $timespans = array('All', 'Last day',
@@ -6,7 +10,8 @@
         'Last month',
         'Last 3 Months',
         'Last 6 Months',
-        'Last year'
+        'Last year',
+        'Choose timespan'
     );
 
     echo '<div id="search_input"><input size="20" type="text" name="search" id="search" /></div>';
@@ -27,6 +32,8 @@
             $timeOption = 6;
         } elseif (abs($seconds - mktime(0, 0, 0, date('m'), date('d'), date('y') - 1)) <= 500) { // Last year
             $timeOption = 7;
+        } else {
+            $timeOption = 8;
         }
         echo $this->Form->select('timespan', $timespans, $timeOption, array('id' => 'timespan'));
     } else {
@@ -58,9 +65,66 @@ foreach ($this->params['named'] as $key => $param) {
         window.location.replace('<?php echo $base . '/' . $this->params['plugin'] . '/' . $this->params['controller'] . '/' . $this->params['action'] . '/'; ?>' + logbookType + '<?php echo $args; ?>');
     });
     
-    $('#timespan').bind('change', function() {
+    $('#timespan')
+    .ready(function() {
         var newTimeSpan = $('#timespan').val();
-        window.location.replace('<?php echo $base . '/' . $this->params['plugin'] . '/' . $this->params['controller']; ?>+ /timespanChange/' + newTimeSpan + '<?php echo $argumentString; ?>');
+        if (newTimeSpan == 8) {
+            $('#quickfilters').append('<div id="date_choice"><input id="datepicker_start" type="text"><input id="datepicker_end" type="text"><button id="datepicker_go" type="button">Go</button></div>');
+            
+            var start_date = new Date();
+            start_date.setTime(<?php echo isset($this->params['named']['start']) ? $this->params['named']['start'] : 0; ?> * 1000);
+            var start_date_string = (start_date.getMonth() + 1) + '/' + start_date.getDate() + '/' + start_date.getFullYear();
+            $('#datepicker_start').datepicker().val(start_date_string);
+            
+            var end_date = new Date();
+            end_date.setTime(<?php echo isset($this->params['named']['end']) ? $this->params['named']['end'] : 0; ?> * 1000);
+            var end_date_string = (end_date.getMonth() + 1) + '/' + end_date.getDate() + '/' + end_date.getFullYear();
+            $('#datepicker_end').datepicker().val(end_date_string);
+        }
+    })
+    .bind('change', function() {
+        var newTimeSpan = $('#timespan').val();
+        if (newTimeSpan == 8) {
+            $('#quickfilters').append('<div id="date_choice"><input id="datepicker_start" type="text"><input id="datepicker_end" type="text"><button id="datepicker_go" type="button">Go</button></div>');
+            $('#datepicker_start').datepicker().watermark('Start date');
+            $('#datepicker_end').datepicker().watermark('End date');
+        }
+        else {
+            window.location.replace('<?php echo $base . '/' . $this->params['plugin'] . '/' . $this->params['controller']; ?>+ /timespanChange/' + newTimeSpan + '<?php echo $argumentString; ?>');
+        }
+    });
+    
+    $('#datepicker_go').live('click', function() {
+        var start = $('#datepicker_start').datepicker('getDate');
+        var end = $('#datepicker_end').datepicker('getDate');
+        
+        if (start == null) {
+            alert('You must choose a starting date!');
+            exit();
+        }
+        if (end == null) {
+            alert('You must choose an ending date!');
+            exit();
+        }
+        
+        if (start > end) {
+            alert('The starting date must not come after the ending date!');
+            exit();
+        }
+        
+        var start_unix = $.PHPDate("U", start);
+        var end_unix = $.PHPDate("U", end);
+        
+<?php
+$args = '';
+foreach ($this->params['named'] as $key => $param) {
+    if ($key != 'start' && $key != 'end') {
+        $args .= '/' . $key . ':' . $param;
+    }
+}
+?>
+        
+        window.location.replace('<?php echo $base . '/' . $this->params['plugin'] . '/' . $this->params['controller'] . '/' . $this->params['action']; ?>/start:' + start_unix + '/end:' + end_unix + '<?php echo $args; ?>');
     });
     
     $('#search').bind('keypress', function(e) {
