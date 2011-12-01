@@ -200,7 +200,13 @@ ul, li {
 
 }
 
+#search_parameters {
+    height: 90px;
+}
+
 #quickfilters {
+    float: left;
+    width: 400px;
     height: 75px; 
     padding-top: 5px;
     padding-left: 20px;
@@ -401,6 +407,15 @@ div.date_and_owner {
     float: left;
 }
 
+#logbook {
+   width: 300px;
+   font-size: 8px;
+}
+
+#select_logbook {
+    float: right;
+}
+
 div.logbooks {
     float: right;
     font-size: 10px;
@@ -584,7 +599,6 @@ label {
 }
 input, textarea {
     clear: both;
-    font-size: 140%;
     font-family: "frutiger linotype", "lucida grande", "verdana", sans-serif;
     padding: 1%;
     width:98%;
