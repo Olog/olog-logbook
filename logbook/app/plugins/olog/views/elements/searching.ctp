@@ -1,7 +1,10 @@
 <?php
 echo $this->Html->script('jquery.phpdate.js');
+echo $this->Html->script('chosen.jquery.min.js');
+echo $this->Html->css('chosen.css');
 ?>
 
+<div id="search_parameters">
 <div id="quickfilters">
     <?php
     $timespans = array('All', 'Last day',
@@ -39,20 +42,32 @@ echo $this->Html->script('jquery.phpdate.js');
     } else {
         echo $this->Form->select('timespan', $timespans, 0, array('id' => 'timespan'));
     }
-    if (isset($this->params['named']['logbook'])) {
-        echo $this->Form->select('logbook', $logbooks, array($this->params['named']['logbook']), array('id' => 'logbook'));
-    } else {
-        echo $this->Form->select('logbook', $logbooks, null, array('id' => 'logbook'));
-    }
     echo '</div>';
     ?>
 </div>
+<div id="select_logbook">
+<?php
+if (isset($this->params['named']['logbook'])) {
+    echo $this->Form->input('logbook', array('label' => false, 'type' => 'select', 'multiple' => true, 'options' => $logbooks, 'data-placeholder' => 'Choose Logbook(s)...', 'selected' => explode(',', $this->params['named']['logbook'])));
+} else {
+    echo $this->Form->input('logbook', array('label' => false, 'type' => 'select', 'multiple' => true, 'options' => $logbooks, 'data-placeholder' => 'Choose Logbook(s)...'));
+}
+?>
+</div>
+</div>
+
+<script type="text/javascript" >
+    $('#logbook').chosen();
+</script>
 
 <script type="text/javascript" >
     $('#logbook').bind('change', function() {
         var logbookType = $('#logbook').val();
-        if(logbookType!=''){
+        if(logbookType != null){
             logbookType='logbook:'+logbookType;
+        }
+        else {
+            logbookType = '';
         }
 <?php
 $args = '';
