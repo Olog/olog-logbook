@@ -72,7 +72,7 @@ if (isset($this->params['named']['logbook'])) {
 <?php
 $args = '';
 foreach ($this->params['named'] as $key => $param) {
-    if ($key != 'logbook') {
+    if ($key != 'logbook' && $key != 'page') {
         $args .= '/' . $key . ':' . $param;
     }
 }
