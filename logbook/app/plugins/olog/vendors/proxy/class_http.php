@@ -163,7 +163,6 @@ class http {
         }
 
         if ($path == "") { $path = "/"; }
-        
         if (!$sock = @fsockopen(((strtolower($protocol) == "https://")?"ssl://":"").$server, $port, $errno, $errstr, $this->connect_timeout)) {
             $this->log .= "Could not open connection. Error "
                 .$errno.": ".$errstr."<br />\n";
@@ -181,7 +180,7 @@ class http {
         
         if (count($this->postvars) > 0) {
             $this->log .= "Variables will be POSTed<br />\n";
-            $request = "POST ".$path." HTTP/1.0\r\n";
+            $request = "POST ".$path." HTTP/1.0\n\n";
             $post_string = "";
             foreach ($this->postvars as $key=>$value) {
                 $post_string .= "&".urlencode($key)."=".urlencode($value);
@@ -191,10 +190,10 @@ class http {
             $this->headers["Content-Length"] = strlen($post_string);
         } elseif (strlen($this->xmlrequest) > 0) {
             $this->log .= "XML request will be sent<br />\n";
-            $request = $verb." ".$path." HTTP/1.0\r\n";
+            $request = $verb." ".$path." HTTP/1.0\n\n";
             $this->headers["Content-Length"] = strlen($this->xmlrequest);
         } else {
-            $request = $verb." ".$path." HTTP/1.0\r\n";
+            $request = $verb." ".$path." HTTP/1.0\n\n";
         }
 
         #echo "<br />request: ".$request;

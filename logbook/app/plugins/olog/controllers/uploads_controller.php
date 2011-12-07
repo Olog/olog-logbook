@@ -96,13 +96,13 @@ class UploadsController extends OlogAppController {
 
         $h->url = $proxy_url;
         $h->postvars = $_POST;
+        $h->dir = realpath(".".DS).DS."tmp".DS;
 
         if (!$h->fetch($h->url)) {
             header("HTTP/1.0 501 Script Error");
             echo "proxy.php had an error attempting to query the url";
             exit();
         }
-
         // Forward the headers to the client.
         $ary_headers = split("\n", $h->header);
         foreach ($ary_headers as $hdr) {
