@@ -599,7 +599,6 @@ label {
 }
 input, textarea {
     clear: both;
-    font-family: "frutiger linotype", "lucida grande", "verdana", sans-serif;
     padding: 1%;
     width:98%;
 }
