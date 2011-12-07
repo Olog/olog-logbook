@@ -1,4 +1,5 @@
 <?php
+echo $this->Html->script('jquery-ui.min.js');
 echo $this->Html->script('jquery.phpdate.js');
 echo $this->Html->script('chosen.jquery.min.js');
 echo $this->Html->css('chosen.css');
