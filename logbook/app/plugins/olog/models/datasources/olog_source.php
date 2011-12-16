@@ -25,6 +25,7 @@ class OlogSource extends RestSource {
             $model->request['uri']['path'] = $this->config['path'] . '/' . $model->request['uri']['path'];
             $model->request['uri']['scheme'] = $this->config['scheme'];
             $model->request['header']['Content-Type'] = 'application/xml';
+            $model->request['header']['X-Forwarded-For'] = $_SERVER['REMOTE_ADDR'];
             $model->request['auth']['method'] = 'Basic';
             $xmlObj = (isset($model->request['body'])) ? $model->request['body'] : '';
             $auth = $session->read('Log');
