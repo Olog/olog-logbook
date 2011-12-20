@@ -15,6 +15,7 @@ class LogsController extends OlogAppController {
             'logs',
             'conditions' => $this->passedArgs,
         );
+        
         $this->set('logs', $this->paginate('Log'));
 
         $levels = array("Info" => "Info",
@@ -40,7 +41,7 @@ class LogsController extends OlogAppController {
 
         $this->set(compact('tags', 'levels', 'argumentString'));
     }
-
+    
     // TODO - Determine whether this action and its associated view is necessary. It looks like it currently isn't being used.
     function view($id = null) {
         if (!$id) {
@@ -138,7 +139,7 @@ class LogsController extends OlogAppController {
             if ($key == 'logId') {
                 $logProperty['log']['id'] = $value;
                 $dbinfo = get_class_vars('DATABASE_CONFIG');
-                $logProperty['log']['subject'] = $dbinfo['olog']['default_subject'];
+//                $logProperty['log']['subject'] = $dbinfo['olog']['default_subject'];
             } else {
                 $logProperty['log']['properties'][str_replace('_', '.', $key)] = $value;
             }

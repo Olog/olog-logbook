@@ -32,7 +32,7 @@
 
         echo $this->Form->input('log.id', array('type' => 'hidden'));
         echo $this->Form->input('log.level');
-        echo $this->Form->input('log.subject', array('type' => 'hidden'));
+//        echo $this->Form->input('log.subject', array('type' => 'hidden'));
         echo $this->Form->input('log.description', array('type' => 'textarea', 'rows' => '2'));
         echo $this->Form->select('log.logbooks', $logbooks, $logbooksSelected, array('multiple' => true));
         echo $this->Form->select('log.tags', $tags, $tagsSelected, array('multiple' => true));

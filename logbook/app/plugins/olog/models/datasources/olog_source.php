@@ -50,15 +50,15 @@ class OlogSource extends RestSource {
         $model->request['uri']['path'] = strtolower(Inflector::pluralize($model->name));
 
         // Default subject - find subject field and change value to default
-        $dbinfo = get_class_vars('DATABASE_CONFIG');
-        $defaultSubject = $dbinfo['olog']['default_subject'];
-        if (is_array($fields)) {
-            foreach ($fields as $key => $value) {
-                if ($value == 'subject') {
-                    $values[$key] = $defaultSubject;
-                }
-            }
-        }
+//        $dbinfo = get_class_vars('DATABASE_CONFIG');
+//        $defaultSubject = $dbinfo['olog']['default_subject'];
+//        if (is_array($fields)) {
+//            foreach ($fields as $key => $value) {
+//                if ($value == 'subject') {
+//                    $values[$key] = $defaultSubject;
+//                }
+//            }
+//        }
         $id_keys = array_keys($fields, 'id');
         if (is_array($fields) && isset($values[$id_keys[0]])) {
             $model->request['uri']['path'] = $model->request['uri']['path'] . '/' . $values[$id_keys[0]];
@@ -140,7 +140,7 @@ class OlogSource extends RestSource {
                 $body .= '<logs>';
             $body .='<log ' . (isset($level_keys[0]) ? 'level="' . $values[$level_keys[0]] . '"' : '') . (isset($id_keys[0]) ? ' id="' . $values[$id_keys[0]] . '">' : '>');
             foreach ($fields as $key => $field) {
-                if ($field == 'description' || $field == 'subject')
+                if ($field == 'description'/* || $field == 'subject'*/)
                     $body .= '<' . $field . '><![CDATA[' . $values[$key] . ']]></' . $field . '>';
                 if ($field == 'tags' || $field == 'logbooks' || $field == 'properties') {
                     if (is_array($values[$key])) {

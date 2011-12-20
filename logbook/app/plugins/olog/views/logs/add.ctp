@@ -6,7 +6,7 @@
  		<legend><?php __('New Log'); ?></legend>
 	<?php
 		echo $this->Form->input('level');
-		echo $this->Form->input('subject');
+//		echo $this->Form->input('subject');
 		echo $this->Form->input('description');
 		echo $this->Form->input('logbooks',array( 'type' => 'select', 'multiple' => true ));
 		echo $this->Form->input('tags', array( 'type' => 'select', 'multiple' => true ));
