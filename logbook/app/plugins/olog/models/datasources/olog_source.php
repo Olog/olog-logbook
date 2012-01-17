@@ -147,8 +147,17 @@ class OlogSource extends RestSource {
                     if (is_array($values[$key])) {
                         $body .= '<' . $field . '>';
                         foreach ($values[$key] as $childKey => $child) {
-                            if ($field == 'properties') {
-                                $body .= '<' . strtolower(Inflector::singularize($field)) . ' name="' . $childKey . '" value="' . $child . '"/>';
+                            if ($field == 'properties' && $childKey == 'property') {
+                                $body .= '<' . $childKey . ' id="' . $child['id'] . '" name="' . $child['name'] . '">';
+                                $body .= '<attributes>';
+                                foreach($child['attributes'] as $attribute) {
+                                    $body .= '<entry>';
+                                    $body .= '<key>' . $attribute['key'] . '</key>';
+                                    $body .= '<value>' . $attribute['value'] . '</value>';
+                                    $body .= '</entry>';
+                                }
+                                $body .= '</attributes>';
+                                $body .= '</' . $childKey . '>';
                             } else {
                                 $body .= '<' . strtolower(Inflector::singularize($field)) . ' name="' . $child . '"/>';
                             }
