@@ -15,7 +15,7 @@ class LogsController extends OlogAppController {
             'logs',
             'conditions' => $this->passedArgs,
         );
-        
+
         $this->set('logs', $this->paginate('Log'));
 
         $levels = array("Info" => "Info",
@@ -41,7 +41,7 @@ class LogsController extends OlogAppController {
 
         $this->set(compact('tags', 'levels', 'argumentString'));
     }
-    
+
     // TODO - Determine whether this action and its associated view is necessary. It looks like it currently isn't being used.
     function view($id = null) {
         if (!$id) {
@@ -82,14 +82,9 @@ class LogsController extends OlogAppController {
 
         if (!empty($this->data)) {
 
-            // Note: Passing 'key->value' as option values, b/c I can't pass keys in a select
-            $properties = array();
-            foreach ($this->data['log']['properties'] as $property) {
-                list($key, $value) = explode('->', $property);
-                $properties[$key] = $value;
-            }
+            $properties = json_decode($this->data['log']['properties'], true);
+            unset($this->data['log']['properties']);
             $this->data['log']['properties'] = $properties;
-
             if ($this->Log->save($this->data)) {
                 $this->Session->setFlash(__('The log has been saved', true));
                 $this->redirect(array('action' => 'index'));

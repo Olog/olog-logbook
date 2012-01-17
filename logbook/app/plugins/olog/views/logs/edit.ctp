@@ -10,22 +10,29 @@
         $tagsSelected = null;
 
         if (isset($this->data['log']['logbooks'])) {
-            foreach ($this->data['log']['logbooks'] as $logbook) {
-                $logbooksSelected[$logbook['name']] = $logbook['name'];
+            foreach ($this->data['log']['logbooks'] as $logbooks_array) {
+                if (isset($logbooks_array['name'])) {
+                    $logbooksSelected[$logbooks_array['name']] = $logbooks_array['name'];
+                } else {
+                    foreach ($logbooks_array as $logbook) {
+                        if (isset($logbook['name'])) {
+                            $logbooksSelected[$logbook['name']] = $logbook['name'];
+                        }
+                    }
+                }
             }
         }
+
         if (isset($this->data['log']['tags'])) {
-            foreach ($this->data['log']['tags'] as $tag) {
-                $tagsSelected[$tag['name']] = $tag['name'];
-            }
-        }
-        $properties = $log['properties'];
-        pr($properties);
-        foreach ($log['properties'] as $properties) {
-            if (isset($properties)) {
-                foreach ($properties as $property) {
-                    // Note: Passing 'key->value' as option values, b/c I can't pass keys in a select
-                    $prop[$property['name'] . '->' . $property['value']] = $property['name'] . '->' . $property['value'];
+            foreach ($this->data['log']['tags'] as $tags_array) {
+                if (isset($tags_array['name'])) {
+                    $tagsSelected[$tags_array['name']] = $tags_array['name'];
+                } else {
+                    foreach ($tags_array as $tag) {
+                        if (isset($tag['name'])) {
+                            $tagsSelected[$tag['name']] = $tag['name'];
+                        }
+                    }
                 }
             }
         }
@@ -33,62 +40,72 @@
         echo $this->Form->input('log.id', array('type' => 'hidden'));
         echo $this->Form->input('log.level');
 //        echo $this->Form->input('log.subject', array('type' => 'hidden'));
+        echo $this->Form->hidden('log.properties', array('value' => json_encode($log['properties'])));
         echo $this->Form->input('log.description', array('type' => 'textarea', 'rows' => '2'));
         echo $this->Form->select('log.logbooks', $logbooks, $logbooksSelected, array('multiple' => true));
         echo $this->Form->select('log.tags', $tags, $tagsSelected, array('multiple' => true));
         echo '<div style="display:none">';
-        echo $this->Form->select('log.properties', $prop, $prop, array('multiple' => true, 'visible' => false));
+        //echo $this->Form->select('log.properties', array('multiple' => true, 'visible' => false));
         echo '</div>';
         ?>
     </fieldset>
     <?php
-    foreach ($log['properties'] as $properties) {
-        if (isset($properties['name'])) {
-            if (preg_match('/component.(\d+).(\w+)/', $properties['name'], $matches)) {
-                $components[$matches[1]][$matches[2]] = $properties['value'];
-            }
-        } else {
-            foreach ($properties as $property) {
-                if (isset($property['name'])) {
-                    if (preg_match('/component.(\d+).(\w+)/', $property['name'], $matches)) {
-                        $components[$matches[1]][$matches[2]] = $property['value'];
-                    }
-                }
-            }
+    foreach ($log['properties'] as $property) {
+        echo '<div>' . $property['name'] . '</div>';
+        echo '<div>attributes</div>';
+        foreach ($property['attributes'] as $attribute) {
+            echo '<div>' . $attribute['key'] . ': ' . $attribute['value'] . '<div>';
         }
     }
-    foreach ($components as $index => $component) {
-        echo '<div>';
-        echo '<input checked="yes" type="checkbox" id="' . $index . '_component' . '" value="' . $index . '"/><img id="' . $log['id'] . '.' . $component['componentType'] . '.' . $index . '" src="' . $base . '/img/task.png"/>&nbsp;' . $component['hierarchy'];
-        echo '</div>';
-        ?>
-        <script type="text/javascript" >
-            $(function(){
-                $('#<?php echo $index; ?>_component').click(function(){
-                    var option = $(this).val();
-                    if($(this).is(':checked')){
-                        $('#logProperties option[value^="component.'+option+'"]').attr('selected','selected');
-                    } else {
-                        $('#logProperties option[value^="component.'+option+'"]').removeAttr('selected');
-                    }
-                });	
-            });
-        </script>
-        <?php
-    }
+//    foreach ($log['properties'] as $properties) {
+//        if (isset($properties['name'])) {
+//            if (preg_match('/component.(\d+).(\w+)/', $properties['name'], $matches)) {
+//                $components[$matches[1]][$matches[2]] = $properties['value'];
+//            }
+//        } else {
+//            foreach ($properties as $property) {
+//                if (isset($property['name'])) {
+//                    if (preg_match('/component.(\d+).(\w+)/', $property['name'], $matches)) {
+//                        $components[$matches[1]][$matches[2]] = $property['value'];
+//                    }
+//                }
+//            }
+//        }
+//    }
+//    foreach ($components as $index => $component) {
+//        echo '<div>';
+//        echo '<input checked="yes" type="checkbox" id="' . $index . '_component' . '" value="' . $index . '"/><img id="' . $log['id'] . '.' . $component['componentType'] . '.' . $index . '" src="' . $base . '/img/task.png"/>&nbsp;' . $component['hierarchy'];
+//        echo '</div>';
+//        
+    ?>
+    <script type="text/javascript" >
+        //            $(function(){
+        //                $('#//<?php //echo $index;     ?>_component').click(function(){
+        //                    var option = $(this).val();
+        //                    if($(this).is(':checked')){
+        //                        $('#logProperties option[value^="component.'+option+'"]').attr('selected','selected');
+        //                    } else {
+        //                        $('#logProperties option[value^="component.'+option+'"]').removeAttr('selected');
+        //                    }
+        //                });	
+        //            });
+    </script>
+    <?php
+//    }
+//    
     ?>
     <?php echo $this->Form->end(__('Submit', true)); ?>
     <span class="uploadspan">
         <div id="fileupload_<?php echo $log['id']; ?>">
             <div class="files" title="<?php echo $base; ?>/olog/uploads/index/id:<?php echo $log['id']; ?>"/>
             <form action="<?php echo $base; ?>/olog/uploads/index/id:<?php echo $log['id']; ?>" method="POST" enctype="multipart/form-data">
-                <?php //<div class="fileupload-buttonbar"> ?>
+                <?php //<div class="fileupload-buttonbar">  ?>
                 <label class="fileinput-button">
                     <span>Add files</span>
                     <input type="hidden" name="id" value="<?php echo $log['id']; ?>" />
                     <input type="file" name="file" multiple>
                 </label>
-                <?php // </div> ?>
+                <?php // </div>  ?>
             </form>
         </div>
         <script id="template-upload" type="text/x-jquery-tmpl">
