@@ -141,6 +141,67 @@ class Log extends OlogAppModel {
         return $success;
     }
 
+    public function xmlFormater($fields, $values) {
+        $body = '';
+        if (is_array($fields) && is_array($fields)) {
+            $body = '<?xml version="1.0" encoding="UTF-8" ?>';
+            $level_keys = array_keys($fields, 'level');
+            $id_keys = array_keys($fields, 'id');
+            if (!isset($id_keys[0]))
+                $body .= '<logs>';
+            $body .='<log ' . (isset($level_keys[0]) ? 'level="' . $values[$level_keys[0]] . '"' : '') . (isset($id_keys[0]) ? ' id="' . $values[$id_keys[0]] . '">' : '>');
+            foreach ($fields as $key => $field) {
+                if ($field == 'description'/* || $field == 'subject' */)
+                    $body .= '<' . $field . '><![CDATA[' . $values[$key] . ']]></' . $field . '>';
+                if ($field == 'tags' || $field == 'logbooks' || $field == 'properties') {
+                    if (is_array($values[$key])) {
+                        $body .= '<' . $field . '>';
+                        foreach ($values[$key] as $childKey => $child) {
+                            if (is_array($child)) {
+                                foreach ($child as $c) {
+                                    if ($field == 'properties' && $childKey == 'property') {
+                                        $body .= '<' . $childKey . ' id="' . $c['id'] . '" name="' . $c['name'] . '">';
+                                        $body .= '<attributes>';
+                                        foreach ($c['attributes']['entry'] as $attribute) {
+                                            $body .= '<entry>';
+                                            $body .= '<key>' . $attribute['key'] . '</key>';
+                                            $body .= '<value>' . $attribute['value'] . '</value>';
+                                            $body .= '</entry>';
+                                        }
+                                        $body .= '</attributes>';
+                                        $body .= '</' . $childKey . '>';
+                                    } else {
+                                        $body .= '<' . strtolower(Inflector::singularize($field)) . ' name="' . $child . '"/>';
+                                    }
+                                }
+                            } else {
+                                if ($field == 'properties' && $childKey == 'property') {
+                                    $body .= '<' . $childKey . ' id="' . $child['id'] . '" name="' . $child['name'] . '">';
+                                    $body .= '<attributes>';
+                                    foreach ($child['attributes']['entry'] as $attribute) {
+                                        $body .= '<entry>';
+                                        $body .= '<key>' . $attribute['key'] . '</key>';
+                                        $body .= '<value>' . $attribute['value'] . '</value>';
+                                        $body .= '</entry>';
+                                    }
+                                    $body .= '</attributes>';
+                                    $body .= '</' . $childKey . '>';
+                                } else {
+                                    $body .= '<' . strtolower(Inflector::singularize($field)) . ' name="' . $child . '"/>';
+                                }
+                            }
+                        }
+                        $body .= '</' . $field . '>';
+                    }
+                }
+            }
+            $body .= "</log>";
+            if (!isset($id_keys[0]))
+                $body .= "</logs>";
+        }
+        return $body;
+    }
+
 }
 
 ?>
