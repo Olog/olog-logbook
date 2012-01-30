@@ -105,12 +105,16 @@ class OlogSource extends RestSource {
      */
     public function update(&$model, $fields = null, $values = null) {
 
-        $model->request['uri']['path'] = strtolower(Inflector::pluralize($model->name));
-        $id_keys = array_keys($fields, 'id');
-        if (is_array($fields) && isset($values[$id_keys[0]])) {
-            $model->request['uri']['path'] = $model->request['uri']['path'] . '/' . $values[$id_keys[0]];
+        if ($model->request['uri']['path'] == null) {
+            $model->request['uri']['path'] = strtolower(Inflector::pluralize($model->name));
+
+            $id_keys = array_keys($fields, 'id');
+            if (is_array($fields) && isset($values[$id_keys[0]])) {
+                $model->request['uri']['path'] = $model->request['uri']['path'] . '/' . $values[$id_keys[0]];
+            }
         }
-        $body = $this->xmlFormater($fields, $values);
+
+        $body = $model->xmlFormater($fields, $values);
         $model->request['body'] = $body;
         $response = parent::update($model, $fields, $values);
         return $response;
@@ -128,49 +132,6 @@ class OlogSource extends RestSource {
         }
         $response = parent::delete($model, $id);
         return $response;
-    }
-
-    // TODO:  This is one ugly to XML
-    private function xmlFormater($fields, $values) {
-        $body = '';
-        if (is_array($fields) && is_array($fields)) {
-            $body = '<?xml version="1.0" encoding="UTF-8" ?>';
-            $level_keys = array_keys($fields, 'level');
-            $id_keys = array_keys($fields, 'id');
-            if (!isset($id_keys[0]))
-                $body .= '<logs>';
-            $body .='<log ' . (isset($level_keys[0]) ? 'level="' . $values[$level_keys[0]] . '"' : '') . (isset($id_keys[0]) ? ' id="' . $values[$id_keys[0]] . '">' : '>');
-            foreach ($fields as $key => $field) {
-                if ($field == 'description'/* || $field == 'subject'*/)
-                    $body .= '<' . $field . '><![CDATA[' . $values[$key] . ']]></' . $field . '>';
-                if ($field == 'tags' || $field == 'logbooks' || $field == 'properties') {
-                    if (is_array($values[$key])) {
-                        $body .= '<' . $field . '>';
-                        foreach ($values[$key] as $childKey => $child) {
-                            if ($field == 'properties' && $childKey == 'property') {
-                                $body .= '<' . $childKey . ' id="' . $child['id'] . '" name="' . $child['name'] . '">';
-                                $body .= '<attributes>';
-                                foreach($child['attributes'] as $attribute) {
-                                    $body .= '<entry>';
-                                    $body .= '<key>' . $attribute['key'] . '</key>';
-                                    $body .= '<value>' . $attribute['value'] . '</value>';
-                                    $body .= '</entry>';
-                                }
-                                $body .= '</attributes>';
-                                $body .= '</' . $childKey . '>';
-                            } else {
-                                $body .= '<' . strtolower(Inflector::singularize($field)) . ' name="' . $child . '"/>';
-                            }
-                        }
-                        $body .= '</' . $field . '>';
-                    }
-                }
-            }
-            $body .= "</log>";
-            if (!isset($id_keys[0]))
-                $body .= "</logs>";
-        }
-        return $body;
     }
 
 }
