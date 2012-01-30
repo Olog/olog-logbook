@@ -81,8 +81,22 @@ class LogsController extends OlogAppController {
         }
 
         if (!empty($this->data)) {
-
             $properties = json_decode($this->data['log']['properties'], true);
+            foreach ($properties as $properties_index => $property) {
+                if (isset($property['name'])) {
+                    if (!in_array($property['name'] . "_" . $property['id'] . "_" . $property['groupingNum'], $this->data['log']['properties_selected'])) {
+                        unset($properties[$properties_index]);
+                    }
+                } else {
+                    foreach ($property as $property_index => $prop) {
+                        if (isset($prop['name'])) {
+                            if (!in_array($prop['name'] . "_" . $prop['id'] . "_" . $prop['groupingNum'], $this->data['log']['properties_selected'])) {
+                                unset($properties[$properties_index][$property_index]);
+                            }
+                        }
+                    }
+                }
+            }
             unset($this->data['log']['properties']);
             $this->data['log']['properties'] = $properties;
             if ($this->Log->save($this->data)) {
@@ -119,7 +133,7 @@ class LogsController extends OlogAppController {
     }
 
     /**
-     * Adds an IRMIS property to a log entry. Parameters are sent implicitly.
+     * Adds a property to a log entry. Parameters are sent implicitly.
      * 
      * @return $flashMessage Success or failure message 
      */
@@ -130,17 +144,21 @@ class LogsController extends OlogAppController {
 
         $logProperty = array();
 
+        $logProperty['property']['attributes'] = array();
         foreach ($this->params['form'] as $key => $value) {
             if ($key == 'logId') {
-                $logProperty['log']['id'] = $value;
-                $dbinfo = get_class_vars('DATABASE_CONFIG');
-//                $logProperty['log']['subject'] = $dbinfo['olog']['default_subject'];
+                $logProperty['property']['log']['id'] = $value;
+            } else if ($key == 'propName') {
+                $logProperty['property']['name'] = $value;
             } else {
-                $logProperty['log']['properties'][str_replace('_', '.', $key)] = $value;
+                $attribute['key'] = str_replace('_', ' ', $key);
+                $attribute['value'] = $value;
+                array_push($logProperty['property']['attributes'], $attribute);
             }
         }
-
-        $saved = $this->Log->merge($logProperty);
+        Controller::loadModel('Property');
+        $saved = $this->Property->save($logProperty);
+        //$saved = $this->Log->merge($logProperty);
         if ($saved) {
             $flashMessage = 'The property has been saved';
         } else {

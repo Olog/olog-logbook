@@ -129,14 +129,16 @@ $service = $dbinfo['irmis']['service'];
                                 componentNumber = parseInt(readNumber)+1;
                             }
                             var params = {};
-                            params["component."+componentNumber+".fieldName"] = $('#fieldNameId').val();
-                            params["component."+componentNumber+".serialNumber"] = $('#serialNumberId').val();
-                            params["component."+componentNumber+".hierarchy"] = $('#hierarchyId').val();
-                            params["component."+componentNumber+".componentType"] = $('#componentTypeId').val();
+                            params['propName'] = "Component"; 
+                            params["Field Name"] = $('#fieldNameId').val();
+                            params["Serial Number"] = $('#serialNumberId').val();
+                            params["Hierarchy"] = $('#hierarchyId').val();
+                            params["Type"] = $('#componentTypeId').val();
                             params["logId"] = $('#componentLogId').val();
                             $.post('<?php echo $base . "/" . $this->params['plugin'] . "/" . $this->params['controller'] . "/addproperty" ?>', params)
                             .success(function(data, textStatus) {
                                 $(this).dialog('close');
+                                //alert(data);
                                 window.location.replace('<?php echo $base . '/' . $this->params['plugin'] . '/' . $this->params['controller'] . '/' . $this->params['action'] . '/' . $args; ?>');
                             })
                             .fail(function() {

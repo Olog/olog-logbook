@@ -37,6 +37,20 @@
             }
         }
 
+        if (isset($log['properties'])) {
+            foreach ($log['properties'] as $properties) {
+                if (isset($properties['name'])) {
+                    $prop[$properties['name'] . "_" . $properties['id'] . "_" . $properties['groupingNum']] = $properties['name'] . "_" . $properties['id'] . "_" . $properties['groupingNum'];
+                } else {
+                    foreach ($properties as $property) {
+                        if (isset($property['name'])) {
+                            $prop[$property['name'] . "_" . $property['id'] . "_" . $property['groupingNum']] = $property['name'] . "_" . $property['id'] . "_" . $property['groupingNum'];
+                        }
+                    }
+                }
+            }
+        }
+
         echo $this->Form->input('log.id', array('type' => 'hidden'));
         echo $this->Form->input('log.level');
 //        echo $this->Form->input('log.subject', array('type' => 'hidden'));
@@ -45,50 +59,69 @@
         echo $this->Form->select('log.logbooks', $logbooks, $logbooksSelected, array('multiple' => true));
         echo $this->Form->select('log.tags', $tags, $tagsSelected, array('multiple' => true));
         echo '<div style="display:none">';
-        //echo $this->Form->select('log.properties', array('multiple' => true, 'visible' => false));
+        echo $this->Form->select('log.properties_selected', $prop, $prop, array('multiple' => true, 'visible' => false));
         echo '</div>';
         ?>
     </fieldset>
     <?php
-    foreach ($log['properties'] as $property) {
-        echo '<div>' . $property['name'] . '</div>';
-        echo '<div>attributes</div>';
-        foreach ($property['attributes'] as $attribute) {
-            echo '<div>' . $attribute['key'] . ': ' . $attribute['value'] . '<div>';
+    if (isset($log['properties'])) {
+        foreach ($log['properties'] as $properties) {
+            if (isset($properties['name']) && ($properties['name'] == "Component")) {
+                foreach ($properties['attributes']['entry'] as $entry) {
+                    if (isset($entry['key']) && ($entry['key'] == "Hierarchy")) {
+                        echo '<input checked="yes" type="checkbox" id="' . $properties['id'] . '_' . $properties['groupingNum'] . '_component' . '" value="' . $properties['id'] . '_' . $properties['groupingNum'] . '"/><img id="' . $log['id'] . '_component' . '" src="' . $base . '/img/task.png" title="properties" alt="properties" />&nbsp;' . $entry['value'];
+                        ?>
+                        <script type="text/javascript" >
+                            $(function(){
+                                $('#<?php echo $properties['id'] . '_' . $properties['groupingNum']; ?>_component').click(function(){
+                                    if($(this).is(':checked')){
+                                        $('#logPropertiesSelected option[value^="Component_<?php echo $properties['id'] . '_' . $properties['groupingNum']; ?>"]').attr('selected','selected');
+                                    } else {
+                                        $('#logPropertiesSelected option[value^="Component_<?php echo $properties['id'] . '_' . $properties['groupingNum']; ?>"]').removeAttr('selected');
+                                    }
+                                });	
+                            });
+                        </script>
+                        <?php
+                    }
+                }
+            } else {
+                foreach ($properties as $property) {
+                    if (isset($property['name']) && ($property['name'] == "Component")) {
+                        foreach ($property['attributes']['entry'] as $entry) {
+                            if (isset($entry['key']) && ($entry['key'] == "Hierarchy")) {
+                                echo '<div><input checked="yes" type="checkbox" id="' . $property['id'] . '_' . $property['groupingNum'] . '_component' . '" value="' . $property['id'] . '_' . $property['groupingNum'] . '"/><img id="' . $log['id'] . '_component' . '" src="' . $base . '/img/task.png" title="properties" alt="properties" />&nbsp;' . $entry['value'] . '</div>';
+                                ?>
+                                <script type="text/javascript" >
+                                    $(function() {
+                                        $('#<?php echo $property['id'] . '_' . $property['groupingNum']; ?>_component').click(function() {
+                                            if($(this).is(':checked')) {
+                                                $('#logPropertiesSelected option[value^="Component_<?php echo $property['id'] . '_' . $property['groupingNum']; ?>"]') . attr('selected', 'selected');
+                                            } else {
+                                                $('#logPropertiesSelected option[value^="Component_<?php echo $property['id'] . '_' . $property['groupingNum']; ?>"]') . removeAttr('selected');
+                                            }
+                                        });
+                                    });
+                                </script>
+                                <?php
+                            }
+                        }
+                    }
+                }
+            }
         }
     }
-//    foreach ($log['properties'] as $properties) {
-//        if (isset($properties['name'])) {
-//            if (preg_match('/component.(\d+).(\w+)/', $properties['name'], $matches)) {
-//                $components[$matches[1]][$matches[2]] = $properties['value'];
-//            }
-//        } else {
-//            foreach ($properties as $property) {
-//                if (isset($property['name'])) {
-//                    if (preg_match('/component.(\d+).(\w+)/', $property['name'], $matches)) {
-//                        $components[$matches[1]][$matches[2]] = $property['value'];
-//                    }
-//                }
-//            }
-//        }
-//    }
-//    foreach ($components as $index => $component) {
-//        echo '<div>';
-//        echo '<input checked="yes" type="checkbox" id="' . $index . '_component' . '" value="' . $index . '"/><img id="' . $log['id'] . '.' . $component['componentType'] . '.' . $index . '" src="' . $base . '/img/task.png"/>&nbsp;' . $component['hierarchy'];
-//        echo '</div>';
-//        
     ?>
     <script type="text/javascript" >
-        //            $(function(){
-        //                $('#//<?php //echo $index;     ?>_component').click(function(){
-        //                    var option = $(this).val();
-        //                    if($(this).is(':checked')){
-        //                        $('#logProperties option[value^="component.'+option+'"]').attr('selected','selected');
-        //                    } else {
-        //                        $('#logProperties option[value^="component.'+option+'"]').removeAttr('selected');
-        //                    }
-        //                });	
-        //            });
+        $(function(){
+            $('#<?php echo $properties['id'] . '_' . $properties['groupingNum']; ?>_component').click(function(){
+                if($(this).is(':checked')){
+                    $('#logPropertiesSelected option[value^="Component"]').attr('selected','selected');
+                } else {
+                    $('#logPropertiesSelected option[value^="Component"]').removeAttr('selected');
+                }
+            });	
+        });
     </script>
     <?php
 //    }
@@ -99,13 +132,13 @@
         <div id="fileupload_<?php echo $log['id']; ?>">
             <div class="files" title="<?php echo $base; ?>/olog/uploads/index/id:<?php echo $log['id']; ?>"/>
             <form action="<?php echo $base; ?>/olog/uploads/index/id:<?php echo $log['id']; ?>" method="POST" enctype="multipart/form-data">
-                <?php //<div class="fileupload-buttonbar">  ?>
+                <?php //<div class="fileupload-buttonbar">   ?>
                 <label class="fileinput-button">
                     <span>Add files</span>
                     <input type="hidden" name="id" value="<?php echo $log['id']; ?>" />
                     <input type="file" name="file" multiple>
                 </label>
-                <?php // </div>  ?>
+                <?php // </div>   ?>
             </form>
         </div>
         <script id="template-upload" type="text/x-jquery-tmpl">

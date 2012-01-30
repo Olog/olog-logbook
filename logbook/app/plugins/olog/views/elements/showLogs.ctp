@@ -43,7 +43,7 @@
                             <?php } ?>
                         </div>
                         <div class="logbooks">
-                            <img src="<?php echo $base; ?>/img/17px-Nuvola_apps_bookcase_1_blue.png" title="logbooks" alt="logbooks"/>&nbsp;<?php
+                            <img src="<?php echo $base; ?>/img/logbook.png" title="logbooks" alt="logbooks"/>&nbsp;<?php
                         foreach ($log['logbooks'] as $logbooks) {
                             if (isset($logbooks['name'])) {
                                 echo $logbooks['name'];
@@ -87,28 +87,29 @@
                     <div>
                         <div class="properties">
                             <?php
-                            foreach ($log['properties'] as $properties) {
-                                if (isset($properties['name'])) {
-                                    if (preg_match('/component.(\d+).(\w+)/', $properties['name'], $matches)) {
-                                        $components[$matches[1]][$matches[2]] = $properties['value'];
-                                    }
-                                } else {
-                                    foreach ($properties as $property) {
-                                        if (isset($property['name'])) {
-                                            if (preg_match('/component.(\d+).(\w+)/', $property['name'], $matches)) {
-                                                $components[$matches[1]][$matches[2]] = $property['value'];
+                            if (isset($log['properties'])) {
+                                foreach ($log['properties'] as $properties) {
+                                    if (isset($properties['name']) && ($properties['name'] == "Component")) {
+                                        foreach ($properties['attributes']['entry'] as $entry) {
+                                            if (isset($entry['key']) && ($entry['key'] == "Hierarchy")) {
+                                                echo '<img id="' . $log['id'] . '_component' . '" src="' . $base . '/img/task.png" title="properties" alt="properties" />&nbsp;' . $entry['value'];
+                                            }
+                                        }
+                                    } else {
+                                        foreach ($properties as $property) {
+                                            if (isset($property['name']) && ($property['name'] == "Component")) {
+                                                foreach ($property['attributes']['entry'] as $entry) {
+                                                    if (isset($entry['key']) && ($entry['key'] == "Hierarchy")) {
+                                                        echo '<div><img id="' . $log['id'] . '_component' . '" src="' . $base . '/img/task.png" title="properties" alt="properties" />&nbsp;' . $entry['value'] . '</div>';
+                                                    }
+                                                }
                                             }
                                         }
                                     }
                                 }
                             }
-                            foreach ($components as $index => $component) {
-                                echo '<div>';
-                                echo '<img id="' . $log['id'] . '.' . $component['componentType'] . '.' . $index . '" src="' . $base . '/img/task.png" title="properties" alt="properties" />&nbsp;' . $component['hierarchy'];
-                                echo '</div>';
-                            }
-                            echo '<div style="display:none" class="maxComponent" >' . max(array_keys($components)) . '</div>';
-                            unset($components);
+//                            echo '<div style="display:none" class="maxComponent" >' . max(array_keys($components)) . '</div>';
+//                            unset($components);
                             ?>
                         </div>
                         <div class="clear"></div>
@@ -130,7 +131,7 @@
                                 <input type="file" name="file" id="fileItem">
                                 <input type="hidden" name="id" value="<?php echo $log['id']; ?>" />
                                 <a style="padding: 0px 0px 0px 20px;" href="<?php echo $base . '/' . $this->params['plugin'] . '/' . $this->params['controller'] . '/edit/' . $log['id']; ?>">
-                                    <img border="0" src="<?php echo $base; ?>/img/blue-document--pencil.png" title="edit log" alt="edit log" />
+                                    <img border="0" src="<?php echo $base; ?>/img/logentry-edit.png" title="edit log" alt="edit log" />
                                 </a>
                                 <span style="padding: 0px 0px 0px 0px;" id="componentAdd_<?php echo $log['id']; ?>" title="<?php echo $log['id']; ?>">
                                     <img border="0" src="<?php echo $base; ?>/img/task--plus.png" title="add component" alt="add component" />
