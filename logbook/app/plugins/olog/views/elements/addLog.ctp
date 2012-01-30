@@ -1,6 +1,6 @@
 <div id='logsFormAdd' align='right'>
-    <img id="closeNewLog" src="<?php echo $base; ?>/img/blue-document--minus.png" title="minimize add new log" alt="minimize add new log" class="NewLog_icons" style="display:none"  />
-    <img id="addNewLog" src="<?php echo $base; ?>/img/blue-document--plus.png" title="add new log" alt="add new log" class="NewLog_icons" />
+    <img id="closeNewLog" src="<?php echo $base; ?>/img/logentry-minus.png" title="minimize add new log" alt="minimize add new log" class="NewLog_icons" style="display:none"  />
+    <img id="addNewLog" src="<?php echo $base; ?>/img/logentry-add.png" title="add new log" alt="add new log" class="NewLog_icons" />
 </div>
 <div id="logForm" class="logs form" style="display: none" >
     <?php echo $this->Form->create('log', array('id' => 'mainFormId', 'action' => 'add')); ?>
