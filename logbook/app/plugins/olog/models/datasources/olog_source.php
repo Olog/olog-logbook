@@ -49,22 +49,13 @@ class OlogSource extends RestSource {
      */
     public function create(&$model, $fields = null, $values = null) {
         $model->request['uri']['path'] = strtolower(Inflector::pluralize($model->name));
-
-        // Default subject - find subject field and change value to default
-//        $dbinfo = get_class_vars('DATABASE_CONFIG');
-//        $defaultSubject = $dbinfo['olog']['default_subject'];
-//        if (is_array($fields)) {
-//            foreach ($fields as $key => $value) {
-//                if ($value == 'subject') {
-//                    $values[$key] = $defaultSubject;
-//                }
-//            }
-//        }
+        
         $id_keys = array_keys($fields, 'id');
         if (is_array($fields) && isset($values[$id_keys[0]])) {
             $model->request['uri']['path'] = $model->request['uri']['path'] . '/' . $values[$id_keys[0]];
         }
-        $body = $this->xmlFormater($fields, $values);
+        
+//        $body = $model->xmlFormater($fields, $values);
         $model->request['body'] = $body;
         $response = parent::create($model, $fields, $values);
         return $response;
