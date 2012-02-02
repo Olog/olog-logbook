@@ -3,7 +3,6 @@
 class UsersController extends OlogAppController {
 
     var $name = 'Users';
-    var $uses = array();
     var $helpers = array('Html', 'Form', 'Session');
 
     /**
