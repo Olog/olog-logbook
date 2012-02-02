@@ -55,7 +55,7 @@ class OlogSource extends RestSource {
             $model->request['uri']['path'] = $model->request['uri']['path'] . '/' . $values[$id_keys[0]];
         }
         
-//        $body = $model->xmlFormater($fields, $values);
+        $body = $model->xmlFormater($fields, $values);
         $model->request['body'] = $body;
         $response = parent::create($model, $fields, $values);
         return $response;
