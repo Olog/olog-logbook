@@ -48,6 +48,7 @@ echo $this->Html->css('chosen.css');
 </div>
 <div id="select_logbook">
 <?php
+asort($logbooks);
 if (isset($this->params['named']['logbook'])) {
     echo $this->Form->input('logbook', array('label' => false, 'type' => 'select', 'multiple' => true, 'options' => $logbooks, 'data-placeholder' => 'Choose Logbook(s)...', 'selected' => explode(',', $this->params['named']['logbook'])));
 } else {
@@ -55,10 +56,21 @@ if (isset($this->params['named']['logbook'])) {
 }
 ?>
 </div>
+<div id="select_tag">
+<?php
+asort($tags);
+if (isset($this->params['named']['tag'])) {
+    echo $this->Form->input('tag', array('label' => false, 'type' => 'select', 'multiple' => true, 'options' => $tags, 'data-placeholder' => 'Choose Tag(s)...', 'selected' => explode(',', $this->params['named']['tag'])));
+} else {
+    echo $this->Form->input('tag', array('label' => false, 'type' => 'select', 'multiple' => true, 'options' => $tags, 'data-placeholder' => 'Choose Tag(s)...'));
+}
+?>
+</div>
 </div>
 
 <script type="text/javascript" >
     $('#logbook').chosen();
+    $('#tag').chosen();
 </script>
 
 <script type="text/javascript" >
@@ -79,6 +91,25 @@ foreach ($this->params['named'] as $key => $param) {
 }
 ?>
         window.location.replace('<?php echo $base . '/' . $this->params['plugin'] . '/' . $this->params['controller'] . '/' . $this->params['action'] . '/'; ?>' + logbookType + '<?php echo $args; ?>');
+    });
+    
+    $('#tag').bind('change', function() {
+        var tagType = $('#tag').val();
+        if(tagType != null){
+            tagType='tag:'+tagType;
+        }
+        else {
+            tagType = '';
+        }
+<?php
+$args = '';
+foreach ($this->params['named'] as $key => $param) {
+    if ($key != 'tag' && $key != 'page') {
+        $args .= '/' . $key . ':' . $param;
+    }
+}
+?>
+        window.location.replace('<?php echo $base . '/' . $this->params['plugin'] . '/' . $this->params['controller'] . '/' . $this->params['action'] . '/'; ?>' + tagType + '<?php echo $args; ?>');
     });
     
     $('#timespan')

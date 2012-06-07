@@ -416,6 +416,10 @@ div.date_and_owner {
     float: right;
 }
 
+#select_tag {
+    float: right;
+}
+
 div.logbooks {
     float: right;
     font-size: 10px;
@@ -497,7 +501,12 @@ table td.actions a {
 .cake-sql-log caption {
     color:#fff;
 }
-
+/** Issues **/
+div span.issuesUrl a {
+    float: right;
+    margin: 1em;
+    display: inline;
+}
 /** Paging **/
 div.paging {
     background:#fff;
