@@ -478,11 +478,31 @@
                         $.ajax(options)
                     )) || that._getXHRPromise(false, options.context)
                     ).done(function (result, textStatus, jqXHR) {
-                        that._onDone(result, textStatus, jqXHR, options);
+                        var files = new Array();
+                        var file = {};
+                        file.name = result.fileName;
+                        file.size = result.fileSize;
+                        file.url = $('div',that.element).prop('title')+"\/"+result.fileName;
+                        if (result.thumbnail == true)
+                            file.thumbnail_url = $('div',that.element).prop('title')+"\/"+result.fileName+":thumbnail";
+                        file.delete_url = $('div',that.element).prop('title')+"\/"+result.fileName;
+                        file.delete_type = "DELETE";
+                        files.push(file);
+                        that._onDone(files, textStatus, jqXHR, options);
                     }).fail(function (jqXHR, textStatus, errorThrown) {
                         that._onFail(jqXHR, textStatus, errorThrown, options);
                     }).always(function (result, textStatus, jqXHR) {
-                        that._onAlways(result, textStatus, jqXHR, options);
+                        var files = new Array();
+                        var file = {};
+                        file.name = result.fileName;
+                        file.size = result.fileSize;
+                        file.url = $('div',that.element).prop('title')+"\/"+result.fileName;
+                        if (result.thumbnail == true)
+                            file.thumbnail_url = $('div',that.element).prop('title')+"\/"+result.fileName+":thumbnail";
+                        file.delete_url = $('div',that.element).prop('title')+"\/"+result.fileName;
+                        file.delete_type = "DELETE";
+                        files.push(file);
+                        that._onAlways(files, textStatus, jqXHR, options);
                     });
                     return jqXHR;
                 };

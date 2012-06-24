@@ -7,6 +7,13 @@
             if ($i++ % 2 == 0) {
                 $class = ' class="altrow"';
             }
+            $dbinfo = get_class_vars('DATABASE_CONFIG');
+            $parse_url = $dbinfo['olog'];
+            $service_url = ((isset($parse_url['scheme'])) ? $parse_url['scheme'] . '://' : '')
+				.((isset($parse_url['user'])) ? $parse_url['user'] . ((isset($parse_url['pass'])) ? ':' . $parse_url['pass'] : '') .'@' : '')
+				.((isset($parse_url['host'])) ? $parse_url['host'] : '')
+				.((isset($parse_url['port'])) ? ':' . $parse_url['port'] : '')
+				.((isset($parse_url['path'])) ? '/'.$parse_url['path'] : '');
             ?>
             <tr<?php echo $class; ?> id="log_<?php echo $log['id']; ?>" >
                 <td class="subject">
@@ -122,13 +129,13 @@
                         <?php echo $this->element('copypaste_action', array('logid' => $log['id'])); ?>
                     </div>
                     <div id="fileupload_<?php echo $log['id']; ?>" >
-                        <div class="files" title="<?php echo $base; ?>/olog/uploads/index/id:<?php echo $log['id']; ?>"/></div>
+                        <div class="files" title="<?php echo $service_url; ?>/attachments/<?php echo $log['id']; ?>"/></div>
                     <div id="file_action">
                         <?php echo $this->element('file_action'); ?>
                     </div>
                     <div class="placeholder">
                         <div class="action_buttons" style="display: none"><label>actions</label>
-                            <form style='padding: 0px' action="<?php echo $base; ?>/olog/uploads/index/id:<?php echo $log['id']; ?>" method="POST" enctype="multipart/form-data">
+                            <form style='padding: 0px' action="<?php echo $service_url; ?>/attachments/<?php echo $log['id']; ?>" method="POST" enctype="multipart/form-data">
                                 <input type="file" name="file" id="fileItem">
                                 <input type="hidden" name="id" value="<?php echo $log['id']; ?>" />
                                 <a style="padding: 0px 0px 0px 20px;" href="<?php echo $base . '/' . $this->params['plugin'] . '/' . $this->params['controller'] . '/edit/' . $log['id']; ?>">

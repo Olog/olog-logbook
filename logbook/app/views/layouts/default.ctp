@@ -36,12 +36,28 @@ $session->flash('auth');
 		echo $scripts_for_layout;
 	?>
 	<?php
-		echo $this->Html->script('jquery-1.6.1.min');
+		echo $this->Html->script('jquery-1.7.2.min');
 		echo $this->Html->script('jquery.filestyle.showfilename');
                 echo $this->Html->script('watermark');
 
 
 	?>
+<script type="text/javascript">
+function basic(){
+    return <?php
+        $auth = $session->read('Log');
+        if (isset($auth['username']) && isset($auth['bindPasswd'])) {
+            $user = $auth['username'];
+            $pass = $auth['bindPasswd'];
+            $basic = '"'.base64_encode($user . ":" . $pass).'"';
+        } else {
+            $basic = "null";
+        }
+        echo $basic;
+    ?>;
+}
+
+</script>
 </head>
 <body>
 	<div id="container">

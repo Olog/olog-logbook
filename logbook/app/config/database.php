@@ -98,12 +98,11 @@ class DATABASE_CONFIG {
 		'host' => 'localhost',
 		'port' => '8181',
 		'path' => 'Olog/resources',
-                'default_subject' => 'Logbook Application',
-		'repository' => 'https://localhost:8181/Olog/repository/olog/'
+                'default_subject' => 'Logbook Application'
 	);
 	
 	var $irmis = array(
-		'service' => 'http://localhost:8080/'
+		'service' => 'http://irmis3.nscl.msu.edu:8080/'
 	);
 	
 	var $issues = array(

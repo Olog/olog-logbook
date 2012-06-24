@@ -437,7 +437,8 @@
                 context: button.closest('.template-download'),
                 url: button.attr('data-url'),
                 type: button.attr('data-type'),
-                dataType: e.data.fileupload.options.dataType
+                dataType: e.data.fileupload.options.dataType,
+                beforeSend: e.data.fileupload.options.beforeSend
             });
         },
         

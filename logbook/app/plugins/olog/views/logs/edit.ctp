@@ -5,6 +5,14 @@
         <?php
         $log = $this->data['log'];
         $base = $this->base;
+        
+        $dbinfo = get_class_vars('DATABASE_CONFIG');
+        $parse_url = $dbinfo['olog'];
+        $service_url = ((isset($parse_url['scheme'])) ? $parse_url['scheme'] . '://' : '')
+				.((isset($parse_url['user'])) ? $parse_url['user'] . ((isset($parse_url['pass'])) ? ':' . $parse_url['pass'] : '') .'@' : '')
+				.((isset($parse_url['host'])) ? $parse_url['host'] : '')
+				.((isset($parse_url['port'])) ? ':' . $parse_url['port'] : '')
+				.((isset($parse_url['path'])) ? '/'.$parse_url['path'] : '');
 
         $logbooksSelected = null;
         $tagsSelected = null;
@@ -130,8 +138,8 @@
     <?php echo $this->Form->end(__('Submit', true)); ?>
     <span class="uploadspan">
         <div id="fileupload_<?php echo $log['id']; ?>">
-            <div class="files" title="<?php echo $base; ?>/olog/uploads/index/id:<?php echo $log['id']; ?>"/>
-            <form action="<?php echo $base; ?>/olog/uploads/index/id:<?php echo $log['id']; ?>" method="POST" enctype="multipart/form-data">
+            <div class="files" title="<?php echo $service_url; ?>/attachments/<?php echo $log['id']; ?>"/>
+            <form action="<?php echo $service_url; ?>/attachments/<?php echo $log['id']; ?>" method="POST" enctype="multipart/form-data">
                 <?php //<div class="fileupload-buttonbar">   ?>
                 <label class="fileinput-button">
                     <span>Add files</span>

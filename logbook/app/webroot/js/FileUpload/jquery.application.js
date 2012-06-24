@@ -16,21 +16,42 @@ $(function () {
 
     // Initialize the jQuery File Upload widget:
     $('div[id^="fileupload_"]').each(function(index,element){
-        $(this).fileupload({dropZone: $(this).parent()});
+        $(this).fileupload({dropZone: $(this).parent(),
+                            type: "POST",
+                            beforeSend: function(xhr){
+                                    xhr.withCredentials = true;
+                                    xhr.setRequestHeader("Authorization",
+                                    "Basic "+basic());
+                                }
+        });
     });
-
     // Load existing files:
     $('div[id^="fileupload_"]').each(function(index,element){
-        $.getJSON($('div',element).prop('title'), function (files) {
-            var fu = $(element).data('fileupload');
-            if(files != null){
+        $.ajax({
+            url: $('div',element).prop('title'),
+            type: 'GET', 
+            dataType: 'json',
+            success: function (response) {
+                var fu = $(element).data('fileupload');
+                var files = new Array();      
+                for(i in response.attachment){
+                    var file = {};
+                    file.name = response.attachment[i].fileName;
+                    file.size = response.attachment[i].fileSize;
+                    file.url = $('div',element).prop('title')+"\/"+response.attachment[i].fileName;
+                    if (response.attachment[i].thumbnail == true)
+                        file.thumbnail_url = $('div',element).prop('title')+"\/"+response.attachment[i].fileName+":thumbnail";
+                    file.delete_url = $('div',element).prop('title')+"\/"+response.attachment[i].fileName;
+                    file.delete_type = "DELETE";
+                    files.push(file);
+                }
                 fu._adjustMaxNumberOfFiles(-files.length);
                 fu._renderDownload(files)
                     .appendTo($('.files',element))
-                    .fadeIn(function () {
+                   .fadeIn(function () {
                         // Fix for IE7 and lower:
-                        $(this).show();
-                });
+                       $(this).show();
+                    });
             }
         });
     });
