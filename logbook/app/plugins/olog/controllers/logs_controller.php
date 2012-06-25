@@ -48,7 +48,20 @@ class LogsController extends OlogAppController {
             $this->Session->setFlash(__('Invalid log', true));
             $this->redirect(array('action' => 'index'));
         }
+        $levels = array("Info" => "Info",
+            "Problem" => "Problem",
+            "Request" => "Request",
+            "Suggestion" => "Suggestion",
+            "Urgent" => "Urgent");
+
+        Controller::loadModel('Logbook');
+        $logbooks = $this->Logbook->find('list');
+        $this->set('logbooks', $logbooks);
+
+        Controller::loadModel('Tag');
+        $tags = $this->Tag->find('list');
         $this->set('log', $this->Log->find('log', array('conditions' => array('id' => $id))));
+        $this->set(compact('tags', 'levels'));
     }
 
     function add() {

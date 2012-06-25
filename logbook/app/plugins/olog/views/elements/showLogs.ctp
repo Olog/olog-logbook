@@ -7,7 +7,14 @@
         | 	<?php echo $this->Paginator->numbers(); ?>
         |
         <?php echo $this->Paginator->next(__('next', true) . ' >>', array(), null, array('class' => 'disabled')); ?>
+        <span class='issuesUrl'>
+            <a href="<?php
+            $dbinfo = get_class_vars('DATABASE_CONFIG');
+            $url = $dbinfo['issues']['url'];
+            echo $url; ?>">Submit Issue</a>
+        </span>
     </div>
+
     <table class="logs" cellpadding="0" cellspacing="0">
         <?php
         $i = 0;
@@ -34,7 +41,8 @@
                 <td class="subject">
                     <div>
                         <div class="date_and_owner">
-                            <?php echo date('d M Y H:i', strtotime($log['createdDate'])) . ', ' . $log['owner']; ?>
+                            <?php echo $this->Html->link(__(date('d M Y H:i', strtotime($log['createdDate'])), true), array('action' => 'view', $log['id'])); ?>
+                            <?php echo  ', ' . $log['owner']; ?>
                             <?php if ($log['version'] > 0) { ?>
                                 |&nbsp;
                                 <div class="edited">
@@ -87,25 +95,47 @@
                     <div>
                         <div class="properties">
                             <?php
+                            $entries = array();
                             if (isset($log['properties'])) {
                                 foreach ($log['properties'] as $properties) {
-                                    if (isset($properties['name']) && ($properties['name'] == "Component")) {
+                                    if (isset($properties['name'])) {
                                         foreach ($properties['attributes']['entry'] as $entry) {
+                                            if (isset($entry['key']) && ($entry['key'] == "id")) {
+                                                $entry_id = $entry['value'];
+                                            }
+                                            if (isset($entry['key']) && ($entry['key'] == "url")) {
+                                                $entry_url = $entry['value'];
+                                            }
                                             if (isset($entry['key']) && ($entry['key'] == "Hierarchy")) {
-                                                echo '<img id="' . $log['id'] . '_component' . '" src="' . $base . '/img/task.png" title="properties" alt="properties" />&nbsp;' . $entry['value'];
+                                                $entry_hierarchy = $entry['value'];
                                             }
                                         }
+                                        $entries[$properties['name']][] = array('id'=>$entry_id, 'url'=>$entry_url, 'hierarchy'=>$entry_hierarchy);
                                     } else {
                                         foreach ($properties as $property) {
-                                            if (isset($property['name']) && ($property['name'] == "Component")) {
+                                            if (isset($property['name'])) {
                                                 foreach ($property['attributes']['entry'] as $entry) {
+                                                    if (isset($entry['key']) && ($entry['key'] == "id")) {
+                                                        $entry_id = $entry['value'];
+                                                    }
+                                                    if (isset($entry['key']) && ($entry['key'] == "url")) {
+                                                        $entry_url = $entry['value'];
+                                                    }
                                                     if (isset($entry['key']) && ($entry['key'] == "Hierarchy")) {
-                                                        echo '<div><img id="' . $log['id'] . '_component' . '" src="' . $base . '/img/task.png" title="properties" alt="properties" />&nbsp;' . $entry['value'] . '</div>';
+                                                        $entry_hierarchy = $entry['value'];
                                                     }
                                                 }
+                                                $entries[$property['name']][] = array('id'=>$entry_id, 'url'=>$entry_url, 'hierarchy'=>$entry_hierarchy);
                                             }
                                         }
                                     }
+                                }
+                                foreach($entries as $key=>$entry){
+                                    echo '<img id="' . $log['id'] . '_'. $key . '" src="' . $base . '/img/task.png" title="properties" alt="properties" />&nbsp;' . $key;
+                                    foreach($entry as $prop){
+                                        $link_array[] = '<a href='.$prop['url'].'> #'.$prop['id'].' '.$prop['hierarchy'].'</a>';
+                                    }
+                                    echo implode(", ", $link_array);
                                 }
                             }
 //                            echo '<div style="display:none" class="maxComponent" >' . max(array_keys($components)) . '</div>';

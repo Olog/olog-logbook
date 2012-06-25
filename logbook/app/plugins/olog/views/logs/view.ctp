@@ -1,259 +1,147 @@
 <div class="logs view">
-<h2><?php  __('Log #'.$log['log']['id']);?></h2>
-	<dl><?php $i = 0; $class = ' class="altrow"';?>
-		<dt<?php if ($i % 2 == 0) echo $class;?>><?php __('Id'); ?></dt>
-		<dd<?php if ($i++ % 2 == 0) echo $class;?>>
-			<?php echo $log['log']['id']; ?>
-			&nbsp;
-		</dd>
-		<dt<?php if ($i % 2 == 0) echo $class;?>><?php __('Created'); ?></dt>
-		<dd<?php if ($i++ % 2 == 0) echo $class;?>>
-			<?php echo date('d M Y H:i', strtotime($log['log']['createdDate'])); ?>
-			&nbsp;
-		</dd>
-		<dt<?php if ($i % 2 == 0) echo $class;?>><?php __('Owner'); ?></dt>
-		<dd<?php if ($i++ % 2 == 0) echo $class;?>>
-			<?php echo $this->Html->link($log['log']['owner'], array('controller' => 'users', 'action' => 'view', $log['log']['owner'])); ?>
-			&nbsp;
-		</dd>
-		<dt<?php if ($i % 2 == 0) echo $class;?>><?php __('Level'); ?></dt>
-		<dd<?php if ($i++ % 2 == 0) echo $class;?>>
-			<?php echo $this->Html->link($log['log']['level'], array('controller' => 'levels', 'action' => 'view', $log['log']['level'])); ?>
-			&nbsp;
-		</dd>
-		<dt<?php if ($i % 2 == 0) echo $class;?>><?php __('Subject'); ?></dt>
-		<dd<?php if ($i++ % 2 == 0) echo $class;?>>
-			<?php echo $log['log']['subject']; ?>
-			&nbsp;
-		</dd>
-		<dt<?php if ($i % 2 == 0) echo $class;?>><?php __('Description'); ?></dt>
-		<dd<?php if ($i++ % 2 == 0) echo $class;?>>
-			<?php echo $log['log']['description']; ?>
-			&nbsp;
-		</dd>
-	</dl>
-</div>
-<div class="related">
-	<h3><?php __('Related Logs');?></h3>
-	<?php if (!empty($log['ChildLog'])):?>
-	<table cellpadding = "0" cellspacing = "0">
-	<tr>
-		<th><?php __('Id'); ?></th>
-		<th><?php __('Created'); ?></th>
-		<th><?php __('Modified'); ?></th>
-		<th><?php __('Source'); ?></th>
-		<th><?php __('User Id'); ?></th>
-		<th><?php __('Level Id'); ?></th>
-		<th><?php __('Subject'); ?></th>
-		<th><?php __('Detail'); ?></th>
-		<th><?php __('Parent Id'); ?></th>
-		<th class="actions"><?php __('Actions');?></th>
-	</tr>
-	<?php
-		$i = 0;
-		foreach ($log['ChildLog'] as $childLog):
-			$class = null;
-			if ($i++ % 2 == 0) {
-				$class = ' class="altrow"';
-			}
-		?>
-		<tr<?php echo $class;?>>
-			<td><?php echo $childLog['id'];?></td>
-			<td><?php echo $childLog['created'];?></td>
-			<td><?php echo $childLog['modified'];?></td>
-			<td><?php echo $childLog['source'];?></td>
-			<td><?php echo $childLog['user_id'];?></td>
-			<td><?php echo $childLog['level_id'];?></td>
-			<td><?php echo $childLog['subject'];?></td>
-			<td><?php echo $childLog['detail'];?></td>
-			<td><?php echo $childLog['parent_id'];?></td>
-			<td class="actions">
-				<?php echo $this->Html->link(__('View', true), array('controller' => 'logs', 'action' => 'view', $childLog['id'])); ?>
-				<?php echo $this->Html->link(__('Edit', true), array('controller' => 'logs', 'action' => 'edit', $childLog['id'])); ?>
-				<?php echo $this->Html->link(__('Delete', true), array('controller' => 'logs', 'action' => 'delete', $childLog['id']), null, sprintf(__('Are you sure you want to delete # %s?', true), $childLog['id'])); ?>
-			</td>
-		</tr>
-	<?php endforeach; ?>
-	</table>
-<?php endif; ?>
-
-	<div class="actions">
-		<ul>
-			<li><?php echo $this->Html->link(__('New Child Log', true), array('controller' => 'logs', 'action' => 'edit',$log['log']['id']));?> </li>
-		</ul>
-	</div>
-</div>
-<div class="related">
-	<h3><?php __('Related Properties');?></h3>
-	<?php if (!empty($log['Property'])):?>
-	<table cellpadding = "0" cellspacing = "0">
-	<tr>
-		<th><?php __('Id'); ?></th>
-		<th><?php __('Log Id'); ?></th>
-		<th><?php __('Name'); ?></th>
-		<th><?php __('Value'); ?></th>
-		<th class="actions"><?php __('Actions');?></th>
-	</tr>
-	<?php
-		$i = 0;
-		foreach ($log['Property'] as $property):
-			$class = null;
-			if ($i++ % 2 == 0) {
-				$class = ' class="altrow"';
-			}
-		?>
-		<tr<?php echo $class;?>>
-			<td><?php echo $property['id'];?></td>
-			<td><?php echo $property['log_id'];?></td>
-			<td><?php echo $property['name'];?></td>
-			<td><?php echo $property['value'];?></td>
-			<td class="actions">
-				<?php echo $this->Html->link(__('View', true), array('controller' => 'properties', 'action' => 'view', $property['id'])); ?>
-				<?php echo $this->Html->link(__('Edit', true), array('controller' => 'properties', 'action' => 'edit', $property['id'])); ?>
-				<?php echo $this->Html->link(__('Delete', true), array('controller' => 'properties', 'action' => 'delete', $property['id']), null, sprintf(__('Are you sure you want to delete # %s?', true), $property['id'])); ?>
-			</td>
-		</tr>
-	<?php endforeach; ?>
-	</table>
-<?php endif; ?>
-
-	<div class="actions">
-		<ul>
-			<li><?php echo $this->Html->link(__('New Property', true), array('controller' => 'properties', 'action' => 'add'));?> </li>
-		</ul>
-	</div>
-</div>
-<div class="related">
-	<h3><?php __('Related Uploads');?></h3>
-	<?php if (!empty($log['Upload'])):?>
-	<table cellpadding = "0" cellspacing = "0">
-	<tr>
-		<th><?php __('Id'); ?></th>
-		<th><?php __('Log Id'); ?></th>
-		<th><?php __('Name'); ?></th>
-		<th><?php __('Store'); ?></th>
-		<th><?php __('Type'); ?></th>
-		<th><?php __('Size'); ?></th>
-		<th><?php __('Created'); ?></th>
-		<th><?php __('Modified'); ?></th>
-		<th class="actions"><?php __('Actions');?></th>
-	</tr>
-	<?php
-		$i = 0;
-		foreach ($log['Upload'] as $upload):
-			$class = null;
-			if ($i++ % 2 == 0) {
-				$class = ' class="altrow"';
-			}
-		?>
-		<tr<?php echo $class;?>>
-			<td><?php echo $upload['id'];?></td>
-			<td><?php echo $upload['log_id'];?></td>
-			<td><?php echo $upload['name'];?></td>
-			<td><?php echo $upload['store'];?></td>
-			<td><?php echo $upload['type'];?></td>
-			<td><?php echo $upload['size'];?></td>
-			<td><?php echo $upload['created'];?></td>
-			<td><?php echo $upload['modified'];?></td>
-			<td class="actions">
-				<?php echo $this->Html->link(__('View', true), array('controller' => 'uploads', 'action' => 'view', $upload['id'])); ?>
-				<?php echo $this->Html->link(__('Edit', true), array('controller' => 'uploads', 'action' => 'edit', $upload['id'])); ?>
-				<?php echo $this->Html->link(__('Delete', true), array('controller' => 'uploads', 'action' => 'delete', $upload['id']), null, sprintf(__('Are you sure you want to delete # %s?', true), $upload['id'])); ?>
-			</td>
-		</tr>
-	<?php endforeach; ?>
-	</table>
-<?php endif; ?>
-
-	<div class="actions">
-		<ul>
-			<li><?php echo $this->Html->link(__('New Upload', true), array('controller' => 'uploads', 'action' => 'add'));?> </li>
-		</ul>
-	</div>
-</div>
-<div class="related">
-	<h3><?php __('Related Wikis');?></h3>
-	<?php if (!empty($log['Wiki'])):?>
-	<table cellpadding = "0" cellspacing = "0">
-	<tr>
-		<th><?php __('Id'); ?></th>
-		<th><?php __('Log Id'); ?></th>
-		<th><?php __('Wiki'); ?></th>
-		<th><?php __('Author'); ?></th>
-		<th><?php __('Url'); ?></th>
-		<th><?php __('History'); ?></th>
-		<th><?php __('Time'); ?></th>
-		<th class="actions"><?php __('Actions');?></th>
-	</tr>
-	<?php
-		$i = 0;
-		foreach ($log['Wiki'] as $wiki):
-			$class = null;
-			if ($i++ % 2 == 0) {
-				$class = ' class="altrow"';
-			}
-		?>
-		<tr<?php echo $class;?>>
-			<td><?php echo $wiki['id'];?></td>
-			<td><?php echo $wiki['log_id'];?></td>
-			<td><?php echo $wiki['wiki'];?></td>
-			<td><?php echo $wiki['author'];?></td>
-			<td><?php echo $wiki['url'];?></td>
-			<td><?php echo $wiki['history'];?></td>
-			<td><?php echo $wiki['time'];?></td>
-			<td class="actions">
-				<?php echo $this->Html->link(__('View', true), array('controller' => 'wikis', 'action' => 'view', $wiki['id'])); ?>
-				<?php echo $this->Html->link(__('Edit', true), array('controller' => 'wikis', 'action' => 'edit', $wiki['id'])); ?>
-				<?php echo $this->Html->link(__('Delete', true), array('controller' => 'wikis', 'action' => 'delete', $wiki['id']), null, sprintf(__('Are you sure you want to delete # %s?', true), $wiki['id'])); ?>
-			</td>
-		</tr>
-	<?php endforeach; ?>
-	</table>
-<?php endif; ?>
-
-	<div class="actions">
-		<ul>
-			<li><?php echo $this->Html->link(__('New Wiki', true), array('controller' => 'wikis', 'action' => 'add'));?> </li>
-		</ul>
-	</div>
-</div>
-<div class="related">
-	<h3><?php __('Related Tags');?></h3>
-	<?php if (!empty($log['Tag'])):?>
-	<table cellpadding = "0" cellspacing = "0">
-	<tr>
-		<th><?php __('Id'); ?></th>
-		<th><?php __('Name'); ?></th>
-		<th><?php __('Status'); ?></th>
-		<th><?php __('Created'); ?></th>
-		<th class="actions"><?php __('Actions');?></th>
-	</tr>
-	<?php
-		$i = 0;
-		foreach ($log['Tag'] as $tag):
-			$class = null;
-			if ($i++ % 2 == 0) {
-				$class = ' class="altrow"';
-			}
-		?>
-		<tr<?php echo $class;?>>
-			<td><?php echo $tag['id'];?></td>
-			<td><?php echo $tag['name'];?></td>
-			<td><?php echo $tag['LogsTag']['status'];?></td>
-			<td><?php echo $tag['LogsTag']['created'];?></td>
-			<td class="actions">
-				<?php echo $this->Html->link(__('View', true), array('controller' => 'logs_tags', 'action' => 'view', $tag['LogsTag']['id'])); ?>
-				<?php echo $this->Html->link(__('Edit', true), array('controller' => 'logs_tags', 'action' => 'edit', $tag['LogsTag']['id'])); ?>
-				<?php echo $this->Html->link(__('Delete', true), array('controller' => 'logs_tags', 'action' => 'delete', $tag['LogsTag']['id']), null, sprintf(__('Are you sure you want to delete # %s?', true), $tag['name'])); ?>
-			</td>
-		</tr>
-	<?php endforeach; ?>
-	</table>
-<?php endif; ?>
-
-	<div class="actions">
-		<ul>
-			<li><?php echo $this->Html->link(__('New Tag', true), array('controller' => 'logs_tags', 'action' => 'add', $log['log']['id']));?> </li>
-		</ul>
-	</div>
-</div>
+<h2><?php  echo '#'.$log['log']['id'];?></h2>
+           <?php
+	   $log=$log['log'];
+	   $base = $this->webroot;
+	   $class = null;
+            if ($i++ % 2 == 0) {
+                $class = ' class="altrow"';
+            }
+            ?>
+            <tr<?php echo $class; ?> id="log_<?php echo $log['id']; ?>" >
+                <td class="subject">
+                    <div>
+                        <div class="date_and_owner">
+                            <?php echo $this->Html->link(__(date('d M Y H:i', strtotime($log['createdDate'])), true), array('action' => 'view', $log['id'])); ?>
+                            <?php echo  ', ' . $log['owner']; ?>
+                            <?php if ($log['version'] > 0) { ?>
+                                |&nbsp;
+                                <div class="edited">
+                                    <?php echo ' [edited] ' . date('d M Y H:i', strtotime($log['modifiedDate'])); ?>
+                                </div>
+                            <?php } ?>
+                        </div>
+                        <div class="logbooks">
+                            <img src="<?php echo $base; ?>/img/logbook.png" title="logbooks" alt="logbooks"/>&nbsp;<?php
+                        foreach ($log['logbooks'] as $logbooks) {
+                            if (isset($logbooks['name'])) {
+                                echo $logbooks['name'];
+                            } else {
+                                $logbook_array = array();
+                                foreach ($logbooks as $logbook) {
+                                    if (isset($logbook['name'])) {
+                                        $logbook_array[] = $logbook['name'];
+                                    }
+                                }
+                                echo implode(", ", $logbook_array);
+                            }
+                        }
+                            ?>
+                        </div>
+                        <div class="clear"></div>
+                    </div>
+                    <div>
+                        <div class="level"><?php echo $log['level'] ?></div>
+                        <div class="tag">
+                            <?php
+                            if (!empty($log['tags']))
+                                echo '<img src="' . $base . '/img/tag-medium.png" title="tags" alt="tags">&nbsp;';
+                            foreach ($log['tags'] as $tags) {
+                                if (isset($tags['name'])) {
+                                    echo $tags['name'];
+                                } else {
+                                    $log_array = array();
+                                    foreach ($tags as $tag) {
+                                        if (isset($tag['name'])) {
+                                            $log_array[] = $tag['name'];
+                                        }
+                                    }
+                                    echo implode(", ", $log_array);
+                                }
+                            }
+                            ?>
+                        </div>
+                        <div class="clear"></div>
+                    </div>
+                    <div>
+                        <div class="properties">
+                            <?php
+                            $entries = array();
+                            if (isset($log['properties'])) {
+                                foreach ($log['properties'] as $properties) {
+                                    if (isset($properties['name'])) {
+                                        foreach ($properties['attributes']['entry'] as $entry) {
+                                            if (isset($entry['key']) && ($entry['key'] == "id")) {
+                                                $entry_id = $entry['value'];
+                                            }
+                                            if (isset($entry['key']) && ($entry['key'] == "url")) {
+                                                $entry_url = $entry['value'];
+                                            }
+                                            if (isset($entry['key']) && ($entry['key'] == "Hierarchy")) {
+                                                $entry_hierarchy = $entry['value'];
+                                            }
+                                        }
+                                        $entries[$properties['name']][] = array('id'=>$entry_id, 'url'=>$entry_url, 'hierarchy'=>$entry_hierarchy);
+                                    } else {
+                                        foreach ($properties as $property) {
+                                            if (isset($property['name'])) {
+                                                foreach ($property['attributes']['entry'] as $entry) {
+                                                    if (isset($entry['key']) && ($entry['key'] == "id")) {
+                                                        $entry_id = $entry['value'];
+                                                    }
+                                                    if (isset($entry['key']) && ($entry['key'] == "url")) {
+                                                        $entry_url = $entry['value'];
+                                                    }
+                                                    if (isset($entry['key']) && ($entry['key'] == "Hierarchy")) {
+                                                        $entry_hierarchy = $entry['value'];
+                                                    }
+                                                }
+                                                $entries[$property['name']][] = array('id'=>$entry_id, 'url'=>$entry_url, 'hierarchy'=>$entry_hierarchy);
+                                            }
+                                        }
+                                    }
+                                }
+                                foreach($entries as $key=>$entry){
+                                    echo '<img id="' . $log['id'] . '_'. $key . '" src="' . $base . '/img/task.png" title="properties" alt="properties" />&nbsp;' . $key;
+                                    foreach($entry as $prop){
+                                        $link_array[] = '<a href='.$prop['url'].'> #'.$prop['id'].' '.$prop['hierarchy'].'</a>';
+                                    }
+                                    echo implode(", ", $link_array);
+                                }
+                            }
+//                            echo '<div style="display:none" class="maxComponent" >' . max(array_keys($components)) . '</div>';
+//                            unset($components);
+                            ?>
+                        </div>
+                        <div class="clear"></div>
+                    </div>
+                    <div class='description'>
+                        <?php echo (!empty($log['description']) ? nl2br(htmlentities($log['description'])) : ''); ?>
+                    </div>
+                    <div id="copypaste_action">
+                        <?php echo $this->element('copypaste_action', array('logid' => $log['id'])); ?>
+                    </div>
+                    <div id="fileupload_<?php echo $log['id']; ?>" >
+                        <div class="files" title="<?php echo $base; ?>/olog/uploads/index/id:<?php echo $log['id']; ?>"/></div>
+                    <div id="file_action">
+                        <?php echo $this->element('file_action'); ?>
+                    </div>
+                    <div class="placeholder">
+                        <div class="action_buttons" style="display: none"><label>actions</label>
+                            <form style='padding: 0px' action="<?php echo $base; ?>/olog/uploads/index/id:<?php echo $log['id']; ?>" method="POST" enctype="multipart/form-data">
+                                <input type="file" name="file" id="fileItem">
+                                <input type="hidden" name="id" value="<?php echo $log['id']; ?>" />
+                                <a style="padding: 0px 0px 0px 20px;" href="<?php echo $base . '/' . $this->params['plugin'] . '/' . $this->params['controller'] . '/edit/' . $log['id']; ?>">
+                                    <img border="0" src="<?php echo $base; ?>/img/logentry-edit.png" title="edit log" alt="edit log" />
+                                </a>
+                                <span style="padding: 0px 0px 0px 0px;" id="componentAdd_<?php echo $log['id']; ?>" title="<?php echo $log['id']; ?>">
+                                    <img border="0" src="<?php echo $base; ?>/img/task--plus.png" title="add component" alt="add component" />
+                                </span>
+                                <span style="padding: 0px 0px 0px 0px;" logid="<?php echo $log['id']; ?>" id="imageAdd_<?php echo $log['id']; ?>">
+                                    <img border="0" src="<?php echo $base; ?>/img/clipboard--plus.png" title="paste from clipboard" alt="paste from clipboard" />
+                                </span>
+                            </form>
+                        </div>
+                    </div>
+                    </div>
+            </tr>
