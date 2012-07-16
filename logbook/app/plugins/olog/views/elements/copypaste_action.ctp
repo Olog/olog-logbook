@@ -1,11 +1,19 @@
 <?php
 echo $this->Html->script('Supa.js');
+        
+        $dbinfo = get_class_vars('DATABASE_CONFIG');
+        $parse_url = $dbinfo['olog'];
+        $service_url = ((isset($parse_url['scheme'])) ? $parse_url['scheme'] . '://' : '')
+				.((isset($parse_url['user'])) ? $parse_url['user'] . ((isset($parse_url['pass'])) ? ':' . $parse_url['pass'] : '') .'@' : '')
+				.((isset($parse_url['host'])) ? $parse_url['host'] : '')
+				.((isset($parse_url['port'])) ? ':' . $parse_url['port'] : '')
+				.((isset($parse_url['path'])) ? '/'.$parse_url['path'] : '');
+        
 ?>
 
-<div id='copypaste_<?php echo $logid; ?>'>
+<div id="copypaste_<?php echo $logid; ?>">
     <div id="placeholder_<?php echo $logid; ?>"></div>
 </div>
-
 <script type="text/javascript" >
     $(function() {
         $( 'span[id^="imageAdd_"]' ).click(function() {
@@ -44,9 +52,14 @@ echo $this->Html->script('Supa.js');
             var param2 = document.createElement('param');
             param2.setAttribute('name', 'previewscaler');
             param2.setAttribute('value', 'fit to canvas');
+            
+            var param3 = document.createElement('param');
+            param3.setAttribute('name', 'imagecodec');
+            param3.setAttribute('value', 'jpg');
                     
             applet.appendChild(param1);
             applet.appendChild(param2);
+            applet.appendChild(param3);
                 
             container.appendChild(input);
             container.appendChild(upload);
@@ -100,16 +113,29 @@ echo $this->Html->script('Supa.js');
     function upload(logid) {
         // Get the base64 encoded data from the applet and POST it via an AJAX 
         // request. See the included Supa.js for details
-        var s = new supa();
+        var s = new Supa();
         var applet = document.getElementById( "SupaApplet" );
+        if( !s.ping( applet ) ) {
+            throw "SupaApplet is not loaded (yet)";
+        }
 
+        var encodedData = applet.getEncodedString();
+        if (!encodedData) {
+            alert(LANG['plugins']['supa']['err_paste_image_first']);
+            return;
+        }
+
+        options=new Object();
+        options.params = new Array();
+        options.params["id"]=logid;
         try { 
             $('#message').html('<img src=\'../img/loading.gif\' />Please wait...');
             var result = s.ajax_post( 
-            applet,       // applet reference
-            "<?php echo $base; ?>/olog/uploads/index/id:" + logid, // call this url
+            encodedData,       // applet reference
+            "<?php echo $service_url; ?>/attachments/" + logid, // call this url
             "file", // this is the name of the POSTed file-element
-            "<?php echo date('dmyGis'); ?>" + ".jpg" // this is the filename of tthe POSTed file
+            "<?php echo date('dmyGis'); ?>" + ".jpg", // this is the filename of tthe POSTed file
+            options
         );
                     
             if( result ) {

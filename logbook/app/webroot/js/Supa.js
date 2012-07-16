@@ -9,7 +9,7 @@
 // Please do not use this as a reference for your implementation 
 // as good coding style was left out for simplicitys sake!
 
-function supa() {
+function Supa() {
   this.ping = function( supaApplet ) {
     try {
       // IE will throw an exception if you try to access the method in a 
@@ -20,7 +20,7 @@ function supa() {
     }
   }
 
-  this.ajax_post = function(  supaApplet, 
+  this.ajax_post = function(  bytes, 
                               actionUrl, 
                               fieldname_filename, 
                               filename, 
@@ -36,12 +36,7 @@ function supa() {
     }
 
 
-    if( !this.ping( supaApplet ) ) {
-      throw "SupaApplet is not loaded (yet)";
-    }
 
-    // get bytes from the applet
-    var bytes = supaApplet.getEncodedString();
     if( !bytes || bytes.length == 0 ) {
       // we're optimistic: any exception means: there's no data :)
       throw "no_data_found";
@@ -86,7 +81,7 @@ function supa() {
     // add the screenshot as a file
     //FIXME: is this the correct encoding?
     body += "Content-Disposition: form-data; name=\""+escape(fieldname_filename)+"\"; filename=\""+encodeURI(filename)+"\"" + cr;
-    body += "Content-Type: application/octet-stream" + cr;
+    body += "Content-Type: image/jpeg" + cr;
     body += "Content-Transfer-Encoding: base64" + cr;
     body += cr;
     body += bytes + cr;
@@ -105,6 +100,8 @@ function supa() {
     // also: chromium considers setting Content-length and Connection unsafe
     // this is no problem as all browsers seem to determine this automagically.
     xrequest.setRequestHeader( "Content-Type", "multipart/form-data; charset=UTF-8; boundary="+boundaryString );
+    xrequest.setRequestHeader("Authorization","Basic "+basic());
+    xrequest.setRequestHeader("Accept","application/json");
     //xrequest.setRequestHeader( "Content-length", body.length );
     //xrequest.setRequestHeader( "Connection", "close" );
     xrequest.send( body );
@@ -117,3 +114,6 @@ function supa() {
       return supaApplet.getEncodedString();
   }
 }
+function supa() {
+    return new Supa();
+}     
