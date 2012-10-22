@@ -21,7 +21,7 @@
                         <div class="date_and_owner">
                             <?php echo $this->Html->link(__(date('d M Y H:i', strtotime($log['createdDate'])), true), array('action' => 'view', $log['id'])); ?>
                             <?php echo  ', ' . $log['owner']; ?>
-                            <?php if ($log['version'] > 0) { ?>
+                            <?php if ($log['version'] > 1) { ?>
                                 |&nbsp;
                                 <div class="edited">
                                     <?php echo ' [edited] ' . date('d M Y H:i', strtotime($log['modifiedDate'])); ?>
