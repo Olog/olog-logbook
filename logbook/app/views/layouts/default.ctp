@@ -63,7 +63,7 @@ function basic(){
 	<div id="container">
 		<div id="header">
                    
-			<h1><?php echo $this->Html->link(__('Logbook', true) , array('plugin'=>'olog','controller' => 'logs', 'action' => 'index')); ?></h1>
+			<h1><?php echo $this->Html->link(__('Logbook', true) , array('plugin'=>'olog','controller' => 'logs', 'action' => 'timespanChange', 3)); ?></h1>
 
                         <div id="sign"><?php
                             if ($this->Session->check('Auth.User.name')) {
