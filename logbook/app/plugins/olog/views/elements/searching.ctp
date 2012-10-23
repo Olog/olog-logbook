@@ -41,7 +41,7 @@ echo $this->Html->css('chosen.css');
         }
         echo $this->Form->select('timespan', $timespans, $timeOption, array('id' => 'timespan'));
     } else {
-        echo $this->Form->select('timespan', $timespans, 0, array('id' => 'timespan'));
+        echo $this->Form->select('timespan', $timespans, 3, array('id' => 'timespan'));
     }
     echo '</div>';
     ?>
