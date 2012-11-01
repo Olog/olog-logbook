@@ -10,7 +10,7 @@ class OlogAppController extends PluginManagerAppController {
     $this->LogAuth->authorize = 'actions';
     $this->LogAuth->loginAction = array('plugin' => 'olog', 'controller' => 'users', 'action' => 'login');
     $this->LogAuth->logoutRedirect = array('plugin' => 'olog', 'controller' => 'users', 'action' => 'login');
-    $this->LogAuth->loginRedirect = array('plugin' => 'olog', 'controller' => 'logs', 'action' => 'index');
+    $this->LogAuth->loginRedirect = array('plugin' => 'olog', 'controller' => 'logs', 'action' => 'timespanChange',3);
   }
   /**
    * Overrides CakePHP's default paging settings, optional.
