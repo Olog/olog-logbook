@@ -39,8 +39,6 @@ $session->flash('auth');
 		echo $this->Html->script('jquery-1.7.2.min');
 		echo $this->Html->script('jquery.filestyle.showfilename');
                 echo $this->Html->script('watermark');
-
-
 	?>
 <script type="text/javascript">
 function basic(){
@@ -57,6 +55,79 @@ function basic(){
     ?>;
 }
 
+function createRequestObject() {
+	var returnObj = false;
+	
+    if(window.XMLHttpRequest) {
+        returnObj = new XMLHttpRequest();
+    } else if(window.ActiveXObject) {
+		try {
+			returnObj = new ActiveXObject("Msxml2.XMLHTTP");
+			} catch (e) {
+			try {
+			returnObj = new ActiveXObject("Microsoft.XMLHTTP");
+			}
+			catch (e) {}
+			}
+			
+    }
+	return returnObj;
+}
+var http = createRequestObject();
+var target;
+// This is the function to call, give it the script file you want to run and
+// the div you want it to output to.
+function sendRequest(scriptFile, targetElement){	
+	target = targetElement;
+	try{
+		http.open('get', scriptFile, true);
+		http.setRequestHeader("X-Requested-With","XMLHttpRequest")
+	}
+	catch (e){
+	document.getElementById(target).innerHTML = e;
+	return;
+	}
+	http.onreadystatechange = handleResponse;
+	http.send();	
+}
+function handleResponse(){	
+	if(http.readyState == 4) {		
+	try{
+		var strResponse = http.responseText;
+		document.getElementById(target).innerHTML = strResponse;
+		
+		} catch (e){
+		document.getElementById(target).innerHTML = e;
+		}
+//var scripts = document.getElementById(target).getElementsByTagName("script");
+      // .text is necessary for IE.
+//      for(var i=0; i < scripts.length; i++){
+//        eval(scripts[i].innerHTML || scripts[i].text);
+//      }	
+	}
+}
+
+function refreshPagination(){
+<?php
+$args = '';
+foreach ($this->params['named'] as $key => $param) {
+        $args .= '/' . $key . ':' . urlencode($param);
+}
+?>
+	if($('.current:first').text()!=''){
+		// jquery load has memory leak
+		//$('#paginateTable').load('<?php echo Router::url('/')."olog/logs/index".$args ?>'+'/page:'+$('.current:first').text());
+		sendRequest('<?php echo Router::url('/')."olog/logs/index".$args ?>'+'/page:'+$('.current:first').text(),'paginateTable');
+		//url='<?php echo Router::url('/')."olog/logs/index".$args ?>'+'/page:'+$('.current:first').text();
+	} else {
+		//$('#paginateTable').load('<?php echo Router::url('/')."olog/logs/index".$args ?>'+'/page:1');
+		sendRequest('<?php echo Router::url('/')."olog/logs/index".$args ?>'+'/page:1','paginateTable');
+		//url='<?php echo Router::url('/')."olog/logs/index".$args ?>'+'/page:1';
+	}
+
+	setTimeout(refreshPagination, 5000);
+}
+refreshPagination();
 </script>
 </head>
 <body>
@@ -88,6 +159,6 @@ function basic(){
 		</div>
 	</div>
 	<?php echo $this->element('sql_dump'); ?>
-	<?php echo $this->Js->writeBuffer(); ?>
+	<?php //echo $this->Js->writeBuffer(); ?>
 </body>
 </html>

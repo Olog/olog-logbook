@@ -2,8 +2,8 @@
 
 class OlogAppController extends PluginManagerAppController {
   
-  var $components = array('Security','LogAuth','Session');
-  var $helpers = array('Html','Form','Session','Xml');
+  var $components = array('Security','LogAuth','Session', 'RequestHandler');
+  var $helpers = array('Html','Form','Session','Xml', 'Js'=>array('Jquery'));
   
   function beforeFilter() { 
     $this->LogAuth->allowedActions = array('display');

@@ -38,11 +38,14 @@ class LogsController extends OlogAppController {
 
         $this->set('session', $this->Session);
         $this->set('base', $this->base);
-
+	
+	if ($this->RequestHandler->isAjax()) {
+		$this->render('/elements/paginateTable');
+		return;
+	}
         $this->set(compact('tags', 'levels', 'argumentString'));
     }
 
-    // TODO - Determine whether this action and its associated view is necessary. It looks like it currently isn't being used.
     function view($id = null) {
         if (!$id) {
             $this->Session->setFlash(__('Invalid log', true));
