@@ -103,11 +103,13 @@ $this->Paginator->options(array(
                     </div>
                     <div>
                         <div class="properties">
-                            <?php
+<?php
+			    unset($link_array);
                             $entries = array();
                             if (isset($log['properties'])) {
                                 foreach ($log['properties'] as $properties) {
-                                    if (isset($properties['name'])) {
+				    $entry_id = $entry_url = $entry_hierarchy = null;
+				    if (isset($properties['name'])) {
                                         foreach ($properties['attributes']['entry'] as $entry) {
                                             if (isset($entry['key']) && ($entry['key'] == "id")) {
                                                 $entry_id = $entry['value'];
@@ -119,9 +121,10 @@ $this->Paginator->options(array(
                                                 $entry_hierarchy = $entry['value'];
                                             }
                                         }
-                                        $entries[$properties['name']][] = array('id'=>$entry_id, 'url'=>$entry_url, 'hierarchy'=>$entry_hierarchy);
+                                        if ($entry_id !=null && $entry_url != null) $entries[$properties['name']][] = array('id'=>$entry_id, 'url'=>$entry_url, 'hierarchy'=>$entry_hierarchy);
                                     } else {
-                                        foreach ($properties as $property) {
+					foreach ($properties as $property) {
+                                            $entry_id = $entry_url = $entry_hierarchy = null;
                                             if (isset($property['name'])) {
                                                 foreach ($property['attributes']['entry'] as $entry) {
                                                     if (isset($entry['key']) && ($entry['key'] == "id")) {
@@ -134,11 +137,11 @@ $this->Paginator->options(array(
                                                         $entry_hierarchy = $entry['value'];
                                                     }
                                                 }
-                                                $entries[$property['name']][] = array('id'=>$entry_id, 'url'=>$entry_url, 'hierarchy'=>$entry_hierarchy);
+                                                if ($entry_id !=null && $entry_url != null) $entries[$property['name']][] = array('id'=>$entry_id, 'url'=>$entry_url, 'hierarchy'=>$entry_hierarchy);
                                             }
                                         }
                                     }
-                                }
+				}
                                 foreach($entries as $key=>$entry){
                                     echo '<img id="' . $log['id'] . '_'. $key . '" src="' . $base . '/img/task.png" title="properties" alt="properties" />&nbsp;' . $key;
                                     foreach($entry as $prop){

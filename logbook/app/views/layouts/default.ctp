@@ -117,17 +117,17 @@ foreach ($this->params['named'] as $key => $param) {
 	if($('.current:first').text()!=''){
 		// jquery load has memory leak
 		//$('#paginateTable').load('<?php echo Router::url('/')."olog/logs/index".$args ?>'+'/page:'+$('.current:first').text());
-		sendRequest('<?php echo Router::url('/')."olog/logs/index".$args ?>'+'/page:'+$('.current:first').text(),'paginateTable');
+		//sendRequest('<?php echo Router::url('/')."olog/logs/index".$args ?>'+'/page:'+$('.current:first').text(),'paginateTable');
 		//url='<?php echo Router::url('/')."olog/logs/index".$args ?>'+'/page:'+$('.current:first').text();
 	} else {
 		//$('#paginateTable').load('<?php echo Router::url('/')."olog/logs/index".$args ?>'+'/page:1');
-		sendRequest('<?php echo Router::url('/')."olog/logs/index".$args ?>'+'/page:1','paginateTable');
+		//sendRequest('<?php echo Router::url('/')."olog/logs/index".$args ?>'+'/page:1','paginateTable');
 		//url='<?php echo Router::url('/')."olog/logs/index".$args ?>'+'/page:1';
 	}
 
 	setTimeout(refreshPagination, 5000);
 }
-refreshPagination();
+//refreshPagination();
 </script>
 </head>
 <body>
