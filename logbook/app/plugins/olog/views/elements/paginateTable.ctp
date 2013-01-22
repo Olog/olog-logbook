@@ -7,10 +7,10 @@
 				.((isset($parse_url['port'])) ? ':' . $parse_url['port'] : '')
 				.((isset($parse_url['path'])) ? '/'.$parse_url['path'] : '');
 
-$this->Paginator->options(array(
-    'update' => '#paginateTable',
-    'evalScripts' => true
-));
+//$this->Paginator->options(array(
+//    'update' => '#paginateTable',
+//    'evalScripts' => true
+//));
 ?>
     <div class="paging">
         <?php echo $this->Paginator->prev('<< ' . __('previous', true), array(), null, array('class' => 'disabled')); ?>
