@@ -38,10 +38,10 @@ $(function () {
                     var file = {};
                     file.name = response.attachment[i].fileName;
                     file.size = response.attachment[i].fileSize;
-                    file.url = $('div',element).prop('title')+"\/"+response.attachment[i].fileName;
+                    file.url = $('div',element).prop('title')+"\/"+encodeURIComponent(response.attachment[i].fileName);
                     if (response.attachment[i].thumbnail == true)
-                        file.thumbnail_url = $('div',element).prop('title')+"\/"+response.attachment[i].fileName+":thumbnail";
-                    file.delete_url = $('div',element).prop('title')+"\/"+response.attachment[i].fileName;
+                        file.thumbnail_url = $('div',element).prop('title')+"\/"+encodeURIComponent(response.attachment[i].fileName)+":thumbnail";
+                    file.delete_url = $('div',element).prop('title')+"\/"+encodeURIComponent(response.attachment[i].fileName);
                     file.delete_type = "DELETE";
                     files.push(file);
                 }
