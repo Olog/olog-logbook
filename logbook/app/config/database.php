@@ -100,7 +100,7 @@ class DATABASE_CONFIG {
 		'port' => '8181',
 		'path' => 'Olog/resources',
                 'default_subject' => 'Logbook Application',
-                'version' => 'v2.2.2-1'
+                'version' => 'v2.2.2-p1'
 	);
 	
 	var $irmis = array(
